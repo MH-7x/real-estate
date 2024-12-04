@@ -1,5 +1,3 @@
-// app/login/page.tsx
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -28,7 +26,7 @@ const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
 });
 
-export function SignInForm() {
+export default function LoginForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -132,5 +130,3 @@ export function SignInForm() {
     </section>
   );
 }
-
-export default SignInForm;

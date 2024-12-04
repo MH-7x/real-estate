@@ -32,10 +32,15 @@ function PropertyCard({
         <CardImagesPreview
           alt={
             property.size.value +
+            " " +
             property.size.unit +
+            " " +
             property.propertyType +
+            " " +
             property.purpose +
-            property.address.city
+            " " +
+            property.address.city +
+            " "
           }
           images={resizeImages}
         />

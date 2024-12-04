@@ -2,10 +2,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import Admin from "@/model/admin.model";
-import jwt from "jsonwebtoken";
 import dbConnect from "@/lib/Connection";
 import adminModel from "@/model/admin.model";
-const SECRET = process.env.JWT_SECRET || "supersecretkey";
+import { generateToken } from "@/lib/jwt";
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
@@ -27,7 +26,7 @@ export async function POST(req: Request) {
       });
     }
 
-    const token = jwt.sign({ email }, SECRET, { expiresIn: "7d" });
+    const token = generateToken({ email });
     const response = NextResponse.json(
       { message: "Login successful", token, success: true },
       { status: 200 }

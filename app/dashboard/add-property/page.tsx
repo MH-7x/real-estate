@@ -1,12 +1,9 @@
 import dynamic from "next/dynamic";
 import React from "react";
 
-// Dynamically import PropertyForm with a custom loader
 const PropertyForm = dynamic(() => import("@/components/PropertyForm"), {
-  // Disable SSR for heavy components
   loading: () => (
     <div className="flex justify-center items-center h-40">
-      {/* Skeleton Loader */}
       <div className="w-full max-w-md p-4 mx-auto bg-white rounded-md shadow animate-pulse">
         <div className="h-6 bg-gray-300 rounded w-1/3 mb-4"></div>
         <div className="h-4 bg-gray-300 rounded mb-4"></div>
@@ -37,7 +34,6 @@ async function AddPropertyPage() {
         <h2 className="text-center">Add New Property</h2>
 
         <div className="mt-10 bg-white drop-shadow-2xl md:w-11/12 w-full mx-auto rounded-2xl p-3">
-          {/* Render the dynamically loaded PropertyForm */}
           <PropertyForm />
         </div>
       </div>

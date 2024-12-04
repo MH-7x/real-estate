@@ -1,8 +1,8 @@
 import dbConnect from "@/lib/Connection";
 
 import adminModel from "@/model/admin.model";
-import { NextRequest, NextResponse } from "next/server";
-export async function GET(req: NextRequest) {
+import { NextResponse } from "next/server";
+export async function GET() {
   try {
     await dbConnect();
     const admins = await adminModel.find({}).sort({ createdAt: -1 });

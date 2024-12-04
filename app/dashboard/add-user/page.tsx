@@ -1,7 +1,4 @@
-// app/login/page.tsx
-
 "use client";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -16,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+
 import { Input } from "@/components/ui/input";
 import { LoaderCircle, LogIn } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -31,7 +29,7 @@ const FormSchema = z.object({
   email: z.string().email({ message: "Please enter a valid email address." }),
 });
 
-export function SignUpForm() {
+export default function SignUpForm() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -149,5 +147,3 @@ export function SignUpForm() {
     </section>
   );
 }
-
-export default SignUpForm;

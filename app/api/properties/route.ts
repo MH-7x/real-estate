@@ -3,7 +3,6 @@ import dbConnect from "@/lib/Connection";
 import Property, { Property as PropertyType } from "@/model/property.model";
 import { PropertySchema } from "@/lib/PropertyValidation";
 import { z } from "zod";
-import { deleteImage } from "../upload/route";
 
 export async function POST(request: NextRequest) {
   try {
@@ -100,6 +99,7 @@ export async function GET(req: NextRequest) {
 
   try {
     await dbConnect();
+
     if (limit !== null) {
       const properties = await Property.find({})
         .sort({ createdAt: -1 })
@@ -150,6 +150,7 @@ export async function GET(req: NextRequest) {
         properties,
       });
     }
+
     const properties = await Property.find({}).sort({ createdAt: -1 });
     if (properties.length === 0) {
       return NextResponse.json({
@@ -157,6 +158,7 @@ export async function GET(req: NextRequest) {
         success: false,
       });
     }
+
     return NextResponse.json({
       message: "Fetched Successfully all",
       success: true,
@@ -192,8 +194,18 @@ export async function DELETE(req: NextRequest) {
     const images = property.images;
     console.log("Images :: ", images);
 
-    const isDeleted = await deleteImage(images);
-    if (!isDeleted) {
+    const response = await fetch(`${process.env.PUBLIC_URL}/api/upload`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ images }),
+    });
+
+    const isDeleted = await response.json();
+    console.log(isDeleted);
+
+    if (!isDeleted.success) {
       return NextResponse.json({
         message: "Error deleting images",
         success: false,

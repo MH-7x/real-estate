@@ -15,11 +15,16 @@ export default async function UsersPage() {
   const data = await fetchUsers();
   const token = (await cookies()).get("token")?.value;
   const tokanData = verifyToken(token);
+
   return (
     <div className="grid gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
       {data.success ? (
         data.admins.map((user) => (
-          <UserCard logedInUser={tokanData?.email} key={user._id} user={user} />
+          <UserCard
+            logedInUser={tokanData?.email || ""}
+            key={user._id}
+            user={user}
+          />
         ))
       ) : (
         <p>No Users Found</p>

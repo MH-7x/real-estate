@@ -4,6 +4,20 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { PropertySchema } from "@/lib/PropertyValidation";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown, Send, Upload } from "lucide-react";
+import { Textarea } from "./ui/textarea";
+import UploadWidget, { CloudinaryWidgetResult } from "./UploadComponent";
+import { Switch } from "./ui/switch";
+import { useRouter } from "next/navigation";
+import ImagesPreview from "./ImagesPreview";
+import { useEffect, useState } from "react";
+import { Input } from "./ui/input";
+
 import {
   Form,
   FormControl,
@@ -13,9 +27,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { PropertySchema } from "@/lib/PropertyValidation";
+
 import {
   bathroomsOptions,
   bedroomOptions,
@@ -30,9 +42,7 @@ import {
   SinResProperty,
   Unit,
 } from "@/types/property";
-import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
-import { cn } from "@/lib/utils";
-import { Check, ChevronsUpDown, Send, Upload } from "lucide-react";
+
 import {
   Command,
   CommandEmpty,
@@ -41,8 +51,7 @@ import {
   CommandItem,
   CommandList,
 } from "./ui/command";
-import { useEffect, useState } from "react";
-import { Input } from "./ui/input";
+
 import {
   Select,
   SelectContent,
@@ -52,11 +61,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Textarea } from "./ui/textarea";
-import UploadWidget from "./UploadComponent";
-import { Switch } from "./ui/switch";
-import { useRouter } from "next/navigation";
-import ImagesPreview from "./ImagesPreview";
 
 export default function ProperyForm({
   property,
@@ -157,7 +161,8 @@ export default function ProperyForm({
     }
   }
 
-  const handleUpload = (error: any, result: any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpload = (error: any, result: CloudinaryWidgetResult) => {
     if (error) {
       console.error("Upload Error:", error);
       toast.error("Image upload failed");

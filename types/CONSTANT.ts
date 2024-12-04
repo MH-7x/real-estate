@@ -50,3 +50,48 @@ export const faqs = [
       "To sell a property in Pakistan, you need the original sale deed, CNIC of the seller, property tax receipts, and a No Objection Certificate (NOC) from relevant authorities.",
   },
 ];
+
+export const cities = [
+  {
+    city: " Peshawar",
+    area: "Hayatabad",
+    img: "/images/Hayat-Abad-Peshawar.jpg",
+    sell: 32,
+    rent: 21,
+  },
+  {
+    city: " Peshawar",
+    area: "Regi model town",
+    img: "/images/gagi-model-town.jpg",
+    sell: 45,
+    rent: 33,
+  },
+  {
+    city: " Peshawar",
+    area: " DHA Peshawar",
+    img: "/images/dha-peshawar.jpg",
+    sell: 65,
+    rent: 43,
+  },
+  {
+    city: " Peshawar",
+    area: " Sheikh Yasin Town",
+    img: "/images/shiekh-yassen-town.jpeg",
+    sell: 73,
+    rent: 44,
+  },
+  {
+    city: "Islamabad",
+    area: "Park View City",
+    img: "/images/shiekh-yassen-town.jpeg",
+    sell: 82,
+    rent: 87,
+  },
+  {
+    city: "Islamabad",
+    area: "Blue World City",
+    img: "/images/blue-world-city.webp",
+    sell: 92,
+    rent: 37,
+  },
+];

@@ -2,11 +2,11 @@
 import React, { useState } from "react";
 
 function FAQs({ faqs }: { faqs: { question: string; answer: string }[] }) {
-  const [openFAQIndex, setOpenFAQIndex] = useState(0); // First FAQ expanded by default
-  const [showAll, setShowAll] = useState(false); // Toggle for showing more FAQs
+  const [openFAQIndex, setOpenFAQIndex] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   const toggleFAQ = (index: number) => {
-    setOpenFAQIndex(openFAQIndex === index ? -1 : index); // Expand/collapse logic
+    setOpenFAQIndex(openFAQIndex === index ? -1 : index);
   };
 
   const toggleShowAll = () => {

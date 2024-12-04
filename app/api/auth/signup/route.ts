@@ -4,15 +4,17 @@ import bcrypt from "bcryptjs";
 import Admin from "@/model/admin.model";
 import dbConnect from "@/lib/Connection";
 
-
 export async function POST(req: Request) {
   try {
     const { name, email, password } = await req.json();
-    await dbConnect()
+    await dbConnect();
 
     const AleradyExist = await Admin.findOne({ email });
     if (AleradyExist) {
-      return NextResponse.json({ success: false, message: "Admin already exists" });
+      return NextResponse.json({
+        success: false,
+        message: "Admin already exists",
+      });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const admin = new Admin({
@@ -22,9 +24,15 @@ export async function POST(req: Request) {
     });
 
     await admin.save();
-    return NextResponse.json({ success: true, message: "Admin created successfully" });
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    return NextResponse.json({
+      success: true,
+      message: "Admin created successfully",
+    });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
-    return NextResponse.json({ success: false, message: "Error creating admin" });
+    return NextResponse.json({
+      success: false,
+      message: "Error creating admin",
+    });
   }
 }
