@@ -24,51 +24,39 @@ import {
 const products = [
   {
     name: "Properties For Sell",
-    description: "Descover better properties for sell",
+    description: "valuable properties for sell",
     href: "#",
     icon: Building2Icon,
   },
   {
-    name: "Properties in Peshawar",
-    description: "Descover better properties in Peshawar",
+    name: "Properties for Rent",
+    description: "best properties for rent",
     href: "#",
     icon: Building2Icon,
   },
   {
-    name: "Properties in Islamabad",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: Building2Icon,
-  },
-  {
-    name: "Discover more",
-    description: "discover more locations",
+    name: "Discover All",
+    description: "view all properties ",
     href: "#",
     icon: MoreHorizontal,
   },
 ];
 const products2 = [
   {
-    name: "Properties For Rent",
-    description: "Descover better properties for sell",
+    name: "Properties in Peshawar",
+    description: "all properties in peshawar",
     href: "#",
     icon: Building2Icon,
   },
   {
-    name: "Properties for rent in Peshawar",
+    name: "Properties in Islamabad",
     description: "Descover better properties in Peshawar and surrounded areas",
     href: "#",
     icon: Building2Icon,
   },
   {
-    name: "Properties for rent in Islamabad",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: Building2Icon,
-  },
-  {
-    name: "Discover more",
-    description: "discover more locations",
+    name: "View All Location",
+    description: "all properties location ",
     href: "#",
     icon: MoreHorizontal,
   },
@@ -111,7 +99,7 @@ function Navbar() {
         <PopoverGroup className="hidden lg:flex lg:gap-x-12 lg:pr-16">
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-              Properties For Sell
+              Properties
               <ChevronDownIcon
                 aria-hidden="true"
                 className="size-5 flex-none text-gray-400"
@@ -153,7 +141,7 @@ function Navbar() {
           </Popover>
           <Popover className="relative">
             <PopoverButton className="flex items-center gap-x-1 text-sm/6 font-semibold text-gray-900">
-              Properties For Rent
+              Locations
               <ChevronDownIcon
                 aria-hidden="true"
                 className="size-5 flex-none text-gray-400"

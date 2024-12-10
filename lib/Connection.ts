@@ -13,7 +13,9 @@ async function dbConnect(): Promise<void> {
   }
 
   if (!process.env.MONGODB_URI_SERVER) {
-    throw new Error("Please define the MONGODB_URI environment variable");
+    throw new Error(
+      "Please define the MONGODB_URI_SERVER environment variable"
+    );
   }
 
   if (mongoose.connections.length > 0) {

@@ -10,7 +10,7 @@ const nextConfig: NextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ["icon-library"],
+    optimizePackageImports: ["lucide-react"],
   },
 };
 

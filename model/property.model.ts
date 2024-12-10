@@ -23,11 +23,13 @@ export interface Property extends Document {
   bedrooms: number;
   bathrooms: number;
   PropertyName: string;
+  slug: string;
   condition: Condition;
   price: number;
   amenities?: Array<{ name: string; value: string }>;
   description?: string;
   images: string[];
+  FacebookVideoLink?: string;
   isFeatured?: boolean;
   discount?: number;
   createdAt?: Date; // Auto-generated for tracking
@@ -55,11 +57,13 @@ const propertySchema = new Schema<Property>({
     required: true,
   },
   PropertyName: { type: String, required: true }, //
+  slug: { type: String, required: true },
   condition: { type: String, required: true }, //
   price: { type: Number, required: [true, "Price is required"], default: 0 },
   amenities: [{ name: String, value: String }], //
   description: { type: String }, //
   images: [{ type: String }], //
+  FacebookVideoLink: { type: String },
   isFeatured: { type: Boolean, default: false }, //
   discount: {
     type: Number,

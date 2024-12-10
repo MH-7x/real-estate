@@ -110,6 +110,7 @@ export default function ProperyForm({
       bathrooms: String(property?.bathrooms) || "",
       PropertyName: property?.PropertyName || "",
       price: String(property?.price) || "",
+      FacebookVideoLink: String(property?.FacebookVideoLink) || "",
       amenities: property?.amenities || [],
       description: property?.description || "",
       isFeatured: property?.isFeatured || false,
@@ -652,6 +653,27 @@ export default function ProperyForm({
                 <Input
                   type="text"
                   placeholder="property name"
+                  {...field}
+                  value={field.value ?? ""}
+                />
+              </FormControl>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="FacebookVideoLink"
+          render={({ field }) => (
+            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
+              <FormLabel className="text-lg text-center block">
+                Facebook Video Link
+              </FormLabel>
+              <FormControl className="">
+                <Input
+                  type="text"
+                  placeholder="past facebook video link"
                   {...field}
                   value={field.value ?? ""}
                 />

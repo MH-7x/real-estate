@@ -321,6 +321,8 @@ export interface ResProperty {
   condition: string;
   price: number;
   description: string;
+  FacebookVideoLink: string;
+  slug: string;
   images: string[];
   isFeatured: boolean;
   discount: number;
@@ -353,6 +355,8 @@ export interface SinResProperty {
   PropertyName: string;
   condition: string;
   price: number;
+  FacebookVideoLink: string;
+  slug: string;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   amenities: any[];
   description: string;
@@ -362,4 +366,20 @@ export interface SinResProperty {
   createdAt: Date;
   updatedAt: Date;
   __v: number;
+}
+
+export interface FilterResponse {
+  success: boolean;
+  result: Result[];
+}
+
+export interface Result {
+  cities: string[];
+  conditions: string[];
+  sizes: Size[];
+}
+
+export interface Size {
+  value: number;
+  unit: string;
 }

@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Delete, Edit } from "lucide-react";
+import { CalendarRange, Delete, Edit } from "lucide-react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -29,6 +29,7 @@ import { CldImage } from "next-cloudinary";
 import { ScrollArea, ScrollBar } from "./ui/scroll-area";
 import { toast } from "sonner";
 import Link from "next/link";
+import formatDate from "@/lib/formatDate";
 
 interface Props {
   properties: ResProperty[];
@@ -97,10 +98,9 @@ export const PropertyTable: React.FC<Props> = ({
     }
   };
   return (
-    <ScrollArea className=" md:w-full w-[92vw] mx-auto">
+    <ScrollArea className="md:w-full w-[92vw] mx-auto">
       <div className=" mx-auto md:px-4 py-8 shadow-lg">
         {/* Search Bar */}
-
         <Input
           type="text"
           placeholder="Search Properties..."
@@ -112,11 +112,11 @@ export const PropertyTable: React.FC<Props> = ({
         {/* Table */}
         <div className="mt-16">
           <Table>
-            <TableHeader>
+            <TableHeader className="bg-secondary">
               <TableRow className="font-semibold text-lg text-center">
-                <TableCell>Images</TableCell>
-                <TableCell> Property Name</TableCell>
-                <TableCell>City </TableCell>
+                <TableCell className={""}>Images</TableCell>
+                <TableCell className={"min-w-44"}> Property Name</TableCell>
+                <TableCell className={"min-w-44"}>City </TableCell>
                 <TableCell>Type </TableCell>
                 <TableCell>Purpose </TableCell>
                 <TableCell>Price</TableCell>
@@ -160,6 +160,12 @@ export const PropertyTable: React.FC<Props> = ({
                     <TableCell>{property.purpose}</TableCell>
                     <TableCell>${property.price.toLocaleString()}</TableCell>
                     <div className="absolute bottom-1 flex gap-x-3 right-2">
+                      <div className="flex mr-4 items-center gap-2">
+                        <CalendarRange className="size-5 text-primary" />
+                        <span className="text-sm text-muted-foreground">
+                          {formatDate(property.createdAt)}
+                        </span>
+                      </div>
                       <Button
                         onClick={() => handleDelete(property._id)}
                         variant={"destructive"}

@@ -60,9 +60,7 @@ function PropertyCard({
       </div>
       <div className="px-2 py-2 relative">
         <div className="flex items-center">
-          <Link
-            href={`/properties/${property.size.value}-${property.size.unit}-${property.propertyType}-${property.purpose}-in-${property.address.city}`}
-          >
+          <Link href={`/property/${property.slug}`}>
             <h3 className=" line-clamp-1">
               {property.size.value} {property.size.unit} {property.propertyType}{" "}
               {property.purpose} in {property.address.city}
@@ -103,10 +101,7 @@ function PropertyCard({
       </div>
       <div className="px-4 pb-4 pt-0 mt-4">
         <div className="flex items-center gap-3">
-          <Link
-            className="w-[70%]"
-            href={`/properties/${property.size.value}-${property.size.unit}-${property.propertyType}-${property.purpose}-in-${property.address.city}`}
-          >
+          <Link className="w-[70%]" href={`/property/${property.slug}`}>
             <Button className="w-full" variant={"outline"}>
               View Details <ArrowRight />
             </Button>

@@ -29,7 +29,7 @@ const people = [
 export default function OurTeam() {
   return (
     <>
-      <section className="relative bg-gradient-to-t to-black/70 via-black/80 from-black/90 text-white md:py-32 py-20 mt-20 md:px-8 px-3">
+      <section className="relative bg-gradient-to-t to-black/70 via-black/80 from-black/90 text-white md:py-32 py-20 mt-32 md:px-8 px-3">
         {/* Background Image */}
         <div
           className="absolute -z-10 inset-0 bg-cover bg-center bg-no-repeat"

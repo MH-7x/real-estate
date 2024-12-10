@@ -14,9 +14,16 @@ export async function POST(request: NextRequest) {
       ...validatedData,
       images: body.images,
     };
+    const slug = fullData.PropertyName.trim()
+      .toLowerCase()
+      .split(" ")
+      .join("-");
 
     await dbConnect();
-    const newProperty: PropertyType = await Property.create(fullData);
+    const newProperty: PropertyType = await Property.create({
+      ...fullData,
+      slug: slug,
+    });
     return NextResponse.json(
       {
         success: true,
@@ -53,12 +60,15 @@ export async function PUT(req: NextRequest) {
 
     const validatedData = PropertySchema.parse(body);
     console.log("validate Data :: ", validatedData);
-
+    const slug = validatedData.PropertyName.trim()
+      .toLowerCase()
+      .split(" ")
+      .join("-");
     await dbConnect();
 
     await Property.findOneAndUpdate(
       { _id: body.id },
-      { ...validatedData, images: body.images },
+      { ...validatedData, images: body.images, slug: slug },
       { new: true }
     );
     return NextResponse.json(
@@ -96,7 +106,7 @@ export async function GET(req: NextRequest) {
   const limit = searchParams.get("limit") || null;
   const id = searchParams.get("id") || null;
   const onlyFeatured = searchParams.get("onlyFeatured") || null;
-
+  const slug = searchParams.get("slug") || null;
   try {
     await dbConnect();
 
@@ -151,6 +161,21 @@ export async function GET(req: NextRequest) {
       });
     }
 
+    if (slug) {
+      const property = await Property.findOne({ slug: slug });
+
+      if (!property) {
+        return NextResponse.json({
+          message: "Cannot Found Property in Database!",
+          success: false,
+        });
+      }
+      return NextResponse.json({
+        message: "Property Details Fetched Successfully",
+        success: true,
+        property,
+      });
+    }
     const properties = await Property.find({}).sort({ createdAt: -1 });
     if (properties.length === 0) {
       return NextResponse.json({
