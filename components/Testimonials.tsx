@@ -46,7 +46,7 @@ export function Testimonials() {
                 <Card className="bg-secondary cursor-grab select-none border-none  bg-white">
                   <CardContent className="text-center">
                     <img
-                      class="object-cover w-32 h-32 mx-auto rounded-full"
+                      className="object-cover w-32 h-32 mx-auto rounded-full"
                       src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/4/avatar.jpg"
                       alt=""
                     />
