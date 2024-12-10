@@ -9,8 +9,9 @@ import {
 } from "@/components/ui/carousel";
 import { Button } from "./ui/button";
 import { ArrowRight } from "lucide-react";
+import { SinResProperty } from "@/types/property";
 
-const property = {
+const property: SinResProperty = {
   address: { city: "peshawar", area: "sheikh-yasin-town" },
   size: { value: 3, unit: "Marla" },
   _id: "674d88a085780b0649815c1d",
@@ -22,6 +23,8 @@ const property = {
   PropertyName: "9 Marla Brand New House For Sell",
   condition: "Brand New",
   price: 11999999,
+  slug: "2-marladfv-fdv-fvf-vfdv-fdv-fdv",
+  FacebookVideoLink: "https://fb.watch/wnYYIX_0pk/",
   amenities: [],
   description: "this is test description for the property.",
   images: [
