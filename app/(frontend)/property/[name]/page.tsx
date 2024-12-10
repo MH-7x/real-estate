@@ -14,7 +14,9 @@ import Image from "next/image";
 
 let errors = "";
 const GetPropertyData = async function (name: string) {
-  const res = await fetch(`http://localhost:3000/api/properties?slug=${name}`);
+  const res = await fetch(
+    `${process.env.PUBLIC_URL}/api/properties?slug=${name}`
+  );
   if (!res.ok) errors = res.statusText;
   const data: { message: string; success: boolean; property: SinResProperty } =
     await res.json();

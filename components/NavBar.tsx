@@ -25,19 +25,19 @@ const products = [
   {
     name: "Properties For Sell",
     description: "valuable properties for sell",
-    href: "#",
+    href: "/properties",
     icon: Building2Icon,
   },
   {
     name: "Properties for Rent",
     description: "best properties for rent",
-    href: "#",
+    href: "/properties",
     icon: Building2Icon,
   },
   {
     name: "Discover All",
     description: "view all properties ",
-    href: "#",
+    href: "/properties",
     icon: MoreHorizontal,
   },
 ];
@@ -45,19 +45,19 @@ const products2 = [
   {
     name: "Properties in Peshawar",
     description: "all properties in peshawar",
-    href: "#",
+    href: "/properties",
     icon: Building2Icon,
   },
   {
     name: "Properties in Islamabad",
     description: "Descover better properties in Peshawar and surrounded areas",
-    href: "#",
+    href: "/properties",
     icon: Building2Icon,
   },
   {
     name: "View All Location",
     description: "all properties location ",
-    href: "#",
+    href: "/properties",
     icon: MoreHorizontal,
   },
 ];
@@ -182,7 +182,7 @@ function Navbar() {
             </PopoverPanel>
           </Popover>
 
-          <a href="#" className="text-sm/6 font-semibold text-gray-900">
+          <a href="/about-us" className="text-sm/6 font-semibold text-gray-900">
             About Us
           </a>
           <a href="#" className="text-sm/6 font-semibold text-gray-900">
