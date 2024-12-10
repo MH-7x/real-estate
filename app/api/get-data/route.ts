@@ -49,10 +49,19 @@ export async function GET(request: NextRequest) {
       data: properties,
     });
   } catch (error) {
+    if (error instanceof Error) {
+      return NextResponse.json(
+        {
+          success: false,
+          error: error.message,
+        },
+        { status: 500 }
+      );
+    }
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "An error occurred",
+        error: "An unexpected error occurred",
       },
       { status: 500 }
     );
