@@ -1,23 +1,31 @@
-import { ResProperty } from "@/types/property";
-import PropertyCard from "./PropertyCard";
+import { SinResProperty } from "@/types/property";
+import React from "react";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from "@/components/ui/carousel";
+} from "./ui/carousel";
 import { CardContent } from "./ui/card";
-import { Button } from "./ui/button";
-import { ArrowRight } from "lucide-react";
-function RecAdd({ properties }: { properties: ResProperty[] }) {
+import PropertyCard from "./PropertyCard";
+
+const SimilarProperties = ({
+  properties,
+  city,
+}: {
+  properties: SinResProperty[];
+  city: string;
+}) => {
   return (
     <section
       id="recently-added "
-      className="lg:px-10 md:px-5 px-3 relative isolate"
+      className="md:w-11/12 mt-16 w-full mx-auto relative isolate"
     >
-      <h2>Reacntly Added</h2>
-      <p>Latest properties added to our listings.</p>
+      <h2 className="text-center">Similar Properties in {city}</h2>
+      <p className="text-center">
+        More similar properties in {city} and its area
+      </p>
 
       <div className="mt-5">
         <Carousel draggable={false} className="w-full">
@@ -36,13 +44,8 @@ function RecAdd({ properties }: { properties: ResProperty[] }) {
           <CarouselNext className="right-2 -translate-x-1 top-0" />
         </Carousel>
       </div>
-      <Button className="-mt-10 ml-4 w-80" variant={"secondary"} size={"lg"}>
-        {" "}
-        View All Properties
-        <ArrowRight />
-      </Button>
     </section>
   );
-}
+};
 
-export default RecAdd;
+export default SimilarProperties;

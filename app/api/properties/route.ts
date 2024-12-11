@@ -145,9 +145,11 @@ export async function GET(req: NextRequest) {
     }
 
     if (onlyFeatured) {
-      const properties = await Property.find({ isFeatured: true }).sort({
-        createdAt: -1,
-      });
+      const properties = await Property.find({ isFeatured: true })
+        .sort({
+          createdAt: -1,
+        })
+        .limit(5);
       if (properties.length === 0) {
         return NextResponse.json({
           message: "Cannot Found Featured Properties in Database!",

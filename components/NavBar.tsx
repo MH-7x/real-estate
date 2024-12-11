@@ -25,13 +25,13 @@ const products = [
   {
     name: "Properties For Sell",
     description: "valuable properties for sell",
-    href: "/properties",
+    href: "/properties?page=1&limit=5&purpose=for sell",
     icon: Building2Icon,
   },
   {
     name: "Properties for Rent",
     description: "best properties for rent",
-    href: "/properties",
+    href: "/properties?page=1&limit=5&purpose=for rent",
     icon: Building2Icon,
   },
   {
@@ -65,6 +65,7 @@ import React from "react";
 import logo from "../public/images/logo.png";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import Link from "next/link";
 function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -72,7 +73,7 @@ function Navbar() {
     <header className="fixed top-0 left-0 md:bg-white/95 bg-white w-full z-30 ">
       <nav className="mx-auto flex max-w-7xl items-center justify-between md:py-2 py-1 lg:px-8 px-3">
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5">
+          <Link href="/" className="-m-1.5 p-1.5">
             <span className="sr-only">BrightHome logo</span>
             <div className="relative md:w-48 w-44 h-14">
               <Image
@@ -84,7 +85,7 @@ function Navbar() {
                 className=" object-contain"
               />
             </div>
-          </a>
+          </Link>
         </div>
         <div className="flex gap-3 lg:hidden">
           {mobileMenuOpen ? (

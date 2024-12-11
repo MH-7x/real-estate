@@ -1,3 +1,4 @@
+"use client";
 import {
   Pagination,
   PaginationContent,
@@ -18,25 +19,32 @@ export function DataPagination({
     totalPages: number;
   };
 }) {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { page, limit, totalPages } = data;
 
-  // Handle edge case where totalPages <= 3
+  // Function to generate the updated URL with only the page parameter modified
+  const updatePageParam = (newPage: number) => {
+    if (typeof window !== "undefined") {
+      const url = new URL(window.location.href); // Parse the current URL
+      url.searchParams.set("page", newPage.toString()); // Update the page parameter
+      return `${url.pathname}?${url.searchParams.toString()}`; // Return the updated URL
+    }
+    return "#"; // Fallback for server-side rendering
+  };
+
+  // Handle edge cases for pagination display
   const visiblePages: number[] = [];
   if (totalPages <= 3) {
-    // Show all pages if total pages are 3 or less
     for (let i = 1; i <= totalPages; i++) {
       visiblePages.push(i);
     }
   } else {
-    // Always include the first page
     visiblePages.push(1);
 
-    // Include pages around the current page (if applicable)
     if (page > 2) visiblePages.push(page - 1);
     if (page > 1 && page < totalPages) visiblePages.push(page);
     if (page < totalPages - 1) visiblePages.push(page + 1);
 
-    // Always include the last page
     if (visiblePages[visiblePages.length - 1] !== totalPages) {
       visiblePages.push(totalPages);
     }
@@ -49,7 +57,7 @@ export function DataPagination({
         <PaginationItem>
           <PaginationPrevious
             disabled={page === 1}
-            href={`?page=${page - 1}&limit=${limit}`}
+            href={updatePageParam(page - 1)}
             aria-disabled={page === 1}
           />
         </PaginationItem>
@@ -68,7 +76,7 @@ export function DataPagination({
             <PaginationItem>
               <PaginationLink
                 isActive={page === currentPage}
-                href={`?page=${currentPage}&limit=${limit}`}
+                href={updatePageParam(currentPage)}
               >
                 {currentPage}
               </PaginationLink>
@@ -79,7 +87,7 @@ export function DataPagination({
         {/* Next Button */}
         <PaginationItem>
           <PaginationNext
-            href={`?page=${page + 1}&limit=${limit}`}
+            href={updatePageParam(page + 1)}
             aria-disabled={page === totalPages}
             disabled={page === totalPages}
           />

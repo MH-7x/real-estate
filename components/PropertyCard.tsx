@@ -50,7 +50,7 @@ function PropertyCard({
             {convertToPkrCurrency(property.price)}
           </span>
         </div>
-        {Popular && (
+        {Popular && value > 0 && (
           <div className="px-3 py-1 bg-white absolute top-0 border left-0 text-black rounded-xl font-bold">
             <span className="flex items-center gap-1 text-red-600">
               <Gift className="w-5 h-5 stroke-primary" /> {value}%

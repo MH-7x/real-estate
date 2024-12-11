@@ -1,5 +1,7 @@
 import dbConnect from "@/lib/Connection";
 import Property from "@/model/property.model";
+import { Unit } from "@/types/property";
+
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -13,32 +15,42 @@ export async function GET(request: NextRequest) {
 
   // Filter parameters
   const city = searchParams.get("city");
-  const area = searchParams.get("area");
+  const purpose = searchParams.get("purpose");
+  const condition = searchParams.get("condition");
   const propertyType = searchParams.get("propertyType");
-  const minPrice = parseInt(searchParams.get("minPrice") || "0");
-  const maxPrice = parseInt(searchParams.get("maxPrice") || "1000000000");
   const bedrooms = parseInt(searchParams.get("bedrooms") || "0");
-  const bathrooms = parseInt(searchParams.get("bathrooms") || "0");
   const isFeatured = searchParams.get("isFeatured") === "true";
-
+  const sortOption = searchParams.get("sort");
+  const sizeValue = parseInt(searchParams.get("sizeValue") || "0");
+  const sizeUnit = searchParams.get("sizeUnit") as Unit;
   // Build the query object based on filters
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const query: any = {};
 
   if (city) query["address.city"] = city;
-  if (area) query["address.area"] = area;
+  if (sizeValue && sizeUnit) query.size = { value: sizeValue, unit: sizeUnit };
+  if (purpose) query.purpose = purpose;
+  if (condition) query.condition = condition;
   if (propertyType) query.propertyType = propertyType;
   if (bedrooms) query.bedrooms = { $gte: bedrooms };
-  if (bathrooms) query.bathrooms = { $gte: bathrooms };
   if (isFeatured) query.isFeatured = true;
-  query.price = { $gte: minPrice, $lte: maxPrice };
+  // Determine sorting order
+  const sort: Record<string, 1 | -1> = {};
+
+  if (sortOption === "lowToHigh") {
+    sort["price"] = 1;
+  } else if (sortOption === "highToLow") {
+    sort["price"] = -1;
+  } else {
+    sort["createdAt"] = -1;
+  }
 
   try {
-    const total = await Property.countDocuments(query); // Total matching documents
+    const total = await Property.countDocuments(query);
     const properties = await Property.find(query)
       .skip((page - 1) * limit)
       .limit(limit)
-      .sort({ createdAt: -1 }); // Sort by latest created
+      .sort(sort);
 
     return NextResponse.json({
       success: true,
@@ -68,7 +80,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-//get filters data
+// Get filters data
 export async function POST() {
   try {
     await dbConnect();
@@ -119,7 +131,7 @@ export async function POST() {
     }
     return NextResponse.json({
       success: false,
-      message: "Server Error : Something Went Wrong",
+      message: "Server Error: Something Went Wrong",
     });
   }
 }
