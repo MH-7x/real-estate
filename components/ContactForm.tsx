@@ -1,20 +1,12 @@
-"use client";
 import React from "react";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { SendIcon } from "lucide-react";
-import Form from "next/form";
 
 function ContactForm() {
-  const handleContactForm = async (formData: FormData) => {
-    console.log("FormData :: ", formData);
-  };
   return (
-    <Form
-      action={handleContactForm}
-      className={"grid grid-cols-1 gap-y-5 mt-8"}
-    >
+    <form className={"grid grid-cols-1 gap-y-5 mt-8"}>
       <h3 className="font-semibold text-center text-muted-foreground">
         Send Message
       </h3>
@@ -44,7 +36,7 @@ function ContactForm() {
       <Button type="submit" className="w-80 mx-auto">
         Send Now <SendIcon />
       </Button>
-    </Form>
+    </form>
   );
 }
 

@@ -165,6 +165,7 @@ export async function GET(req: NextRequest) {
 
     if (slug) {
       const property = await Property.findOne({ slug: slug });
+      console.log("Comes To API Endpoint");
 
       if (!property) {
         return NextResponse.json({
@@ -172,6 +173,7 @@ export async function GET(req: NextRequest) {
           success: false,
         });
       }
+      console.log("Founded And Sending....");
       return NextResponse.json({
         message: "Property Details Fetched Successfully",
         success: true,

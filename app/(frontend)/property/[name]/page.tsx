@@ -16,9 +16,13 @@ const fetchWithErrorHandling = async (url: string) => {
   try {
     const res = await fetch(url);
     if (!res.ok) {
+      console.log("Response status is not ok:", res.status);
+
       throw new Error(`Failed to fetch: ${res.statusText}`);
     }
-    return await res.json();
+    const data = await res.json();
+    console.log("DATA  :: ", data);
+    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
     return { success: false, message: "something went wrong" + error };
