@@ -27,12 +27,14 @@ const FetchURL = async (url: string) => {
   try {
     const res = await fetch(url);
     if (!res.ok) {
+      console.error(`Fetch failed with status: ${res.status}`);
       throw new Error(`Failed to fetch: ${res.statusText}`);
     }
     const data = await res.json();
     return data;
   } catch (error) {
-    return { success: false, message: "something went wrong" + error };
+    console.error(`Error fetching URL ${url}:`, error);
+    return { success: false, message: "Failed to fetch data: " + error };
   }
 };
 
@@ -40,8 +42,14 @@ const GetCityData = async () => {
   const data: Main = await FetchURL(
     `${process.env.PUBLIC_URL}/api/get-city-data?city=islamabad`
   );
-  if (data.success === false) {
-    throw new Error("Cannot Get Properties Data");
+  if (!data || data.success === false) {
+    console.warn("Fallback to default data due to fetch error.");
+    return {
+      success: false,
+      message: "No data available at the moment",
+      totalCount: 0,
+      data: { uniqueAreas: [], uniquePropertyTypes: [], uniqueSizes: [] },
+    };
   }
   return data;
 };

@@ -49,8 +49,7 @@ async function getProperties(
     });
 
     const res = await fetch(
-      `${process.env.PUBLIC_URL || ""}/api/get-data?${params.toString()}`,
-      { cache: "no-store" }
+      `${process.env.PUBLIC_URL || ""}/api/get-data?${params.toString()}`
     );
 
     if (!res.ok) {

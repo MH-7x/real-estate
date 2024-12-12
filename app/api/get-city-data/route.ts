@@ -16,9 +16,11 @@ export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
+    console.log("Comes To Get City Data");
+
     // Step 1: Count the total documents for the specified city
     const totalCount = await Property.countDocuments({ "address.city": city });
-
+    console.log("Completed Counting ...");
     // If no documents are found, return an appropriate response
     if (totalCount === 0) {
       return NextResponse.json({
@@ -52,7 +54,7 @@ export async function GET(req: NextRequest) {
         },
       },
     ]);
-
+    console.log("Completed Filtering ...");
     return NextResponse.json({
       message: "Fetched data successfully",
       success: true,
