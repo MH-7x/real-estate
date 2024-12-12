@@ -3,9 +3,7 @@ import React from "react";
 
 import dynamic from "next/dynamic";
 
-const CityFilterData = dynamic(() => import("@/components/CityFilterData"), {
-  ssr: false,
-});
+const CityFilterData = dynamic(() => import("@/components/CityFilterData"));
 
 export interface Main {
   message: string;

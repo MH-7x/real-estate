@@ -1,8 +1,6 @@
 import dynamic from "next/dynamic";
 
-const CityFilterData = dynamic(() => import("@/components/CityFilterData"), {
-  ssr: false,
-});
+const CityFilterData = dynamic(() => import("@/components/CityFilterData"));
 import PageHeroSection from "@/components/PageHeroSection";
 import React from "react";
 
