@@ -39,7 +39,7 @@ function GridCard({ property }: { property: SinResProperty }) {
           {property.address.area}, {property.address.city}
         </p>
         <Separator className="my-2" />
-        <div className="flex items-center md:gap-5 gap-3 flex-wrap">
+        <div className="flex items-center md:gap-x-5 gap-3 flex-wrap">
           <div className="flex items-center gap-1 font-semibold">
             <HouseIcon className="text-primary size-[17px]" />
             <p className="capitalize text-sm">{property.propertyType}</p>

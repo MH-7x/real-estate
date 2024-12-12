@@ -45,13 +45,13 @@ const products2 = [
   {
     name: "Properties in Peshawar",
     description: "all properties in peshawar",
-    href: "/properties",
+    href: "/sale/properies-in-peshawar",
     icon: Building2Icon,
   },
   {
     name: "Properties in Islamabad",
     description: "Descover better properties in Peshawar and surrounded areas",
-    href: "/properties",
+    href: "/sale/properies-in-islamabad",
     icon: Building2Icon,
   },
   {

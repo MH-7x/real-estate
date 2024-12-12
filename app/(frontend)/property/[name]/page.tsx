@@ -76,6 +76,7 @@ async function SinglePropertyDetail({
   if (errors) {
     return (
       <div className="mt-28 bg-secondary w-11/12 mx-auto min-h-96 flex items-center justify-center">
+        <Image src={"/error.svg"} alt="error" width={100} height={100} />
         <h3>{errors}</h3>
       </div>
     );

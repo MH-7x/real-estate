@@ -15,6 +15,7 @@ export async function GET(request: NextRequest) {
 
   // Filter parameters
   const city = searchParams.get("city");
+  const area = searchParams.get("area");
   const purpose = searchParams.get("purpose");
   const condition = searchParams.get("condition");
   const propertyType = searchParams.get("propertyType");
@@ -28,6 +29,7 @@ export async function GET(request: NextRequest) {
   const query: any = {};
 
   if (city) query["address.city"] = city;
+  if (area) query["address.area"] = area;
   if (sizeValue && sizeUnit) query.size = { value: sizeValue, unit: sizeUnit };
   if (purpose) query.purpose = purpose;
   if (condition) query.condition = condition;
