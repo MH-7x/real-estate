@@ -15,7 +15,10 @@ import React from "react";
 async function RecentlyAdded() {
   try {
     const response = await fetch(
-      `${process.env.PUBLIC_URL}/api/properties?limit=5`
+      `${process.env.PUBLIC_URL}/api/properties?limit=5`,
+      {
+        cache: "no-store",
+      }
     );
     const data: ResponseProperty = await response.json();
     return data;
@@ -29,6 +32,7 @@ async function RecentlyAdded() {
     }
   }
 }
+
 const FeturedProperties = async () => {
   try {
     const response = await fetch(
@@ -46,6 +50,18 @@ const FeturedProperties = async () => {
     }
   }
 };
+
+/**
+ * The home page of the website.
+ *
+ * This page will fetch the recently added properties and featured properties
+ * and render them in a card component.
+ *
+ * If there is an error fetching the properties it will render an error message
+ * with a refresh button.
+ *
+ * @returns The JSX element representing the home page.
+ */
 
 async function page() {
   const recentlyAdded = RecentlyAdded();

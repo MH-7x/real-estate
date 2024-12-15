@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function SelectComponent({
   data,
@@ -28,7 +29,7 @@ export function SelectComponent({
 }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
-
+  const isMobile = useIsMobile();
   const router = useRouter();
 
   const updateAreaParam = (newParam: string) => {
@@ -66,7 +67,9 @@ export function SelectComponent({
           variant="outline"
           role="combobox"
           aria-expanded={open}
-          className="w-[250px] bg-primary/5 py-6 justify-between"
+          className={`md:w-[250px] ${
+            type === "sort" ? "w-36" : "w-40"
+          }  bg-primary/5 md:py-6 py-4 justify-between`}
         >
           {type === "size"
             ? value
@@ -83,9 +86,11 @@ export function SelectComponent({
           <ChevronsUpDown className="opacity-50" />
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent
+        className={`md:w-[250px] ${type === "sort" ? "w-36" : "w-40"} p-0`}
+      >
         <Command>
-          <CommandInput placeholder={`Search ${type}...`} />
+          {!isMobile && <CommandInput placeholder={`Search ${type}...`} />}
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup>
@@ -98,13 +103,14 @@ export function SelectComponent({
                           framework.label as number,
                           framework.value
                         );
+
                         setValue(currentValue);
                         setOpen(false);
                       }}
                     >
                       <Check
                         className={cn(
-                          "mr-2 h-4 w-4",
+                          " h-4 w-4",
                           value === framework.label + " " + framework.value
                             ? "opacity-100"
                             : "opacity-0"

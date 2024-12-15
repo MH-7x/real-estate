@@ -1,12 +1,13 @@
 import ContactForm from "@/components/ContactForm";
 import { DataPagination } from "@/components/DataPagination";
 import GridCard from "@/components/GridCard";
-import IslamabadPageContent from "@/components/IslamabadPageContent";
+
+import PeshawarPageContent from "@/components/PeshawarPageContent";
 import RefreshButton from "@/components/RefreshButton";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { SinResProperty } from "@/types/property";
-import { headers } from "next/headers";
+
 import Image from "next/image";
 import React from "react";
 
@@ -33,6 +34,7 @@ async function getProperties(
   page: number,
   limit: number,
   city: string,
+  purpose: string,
   filters: Filters = {}
 ): Promise<Main> {
   try {
@@ -40,6 +42,7 @@ async function getProperties(
       page: page.toString(),
       limit: limit.toString(),
       city: city.toString(),
+      purpose: purpose.toString(),
       ...Object.fromEntries(
         Object.entries(filters)
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -78,6 +81,7 @@ async function page({
     page: string;
     limit: string;
     city: string;
+    purpose: string;
     area: string;
     sizeValue: string;
     sizeUnit: string;
@@ -89,7 +93,7 @@ async function page({
   const page = parseInt(params.page || "1", 10);
   const limit = parseInt(params.limit || "5", 10);
   const city = params.city || "peshawar";
-
+  const purpose = params.purpose || "for sell";
   const filters: Filters = {
     area: params.area,
     propertyType: params.propertyType,
@@ -98,16 +102,17 @@ async function page({
     sort: params.sort as Filters["sort"],
   };
 
-  const response: Main = await getProperties(page, limit, city, filters);
-
-  const ReqHeaders = headers();
-  const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(
-    (await ReqHeaders).get("user-agent") || ""
+  const response: Main = await getProperties(
+    page,
+    limit,
+    city,
+    purpose,
+    filters
   );
   return (
     <>
-      <section className="mt-16 md:px-5  grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-8">
-        <div className="lg:col-span-5">
+      <section className="md:mt-16 mt-10 md:px-5 px-3 grid grid-cols-1 gap-x-8 gap-y-10 lg:grid-cols-8">
+        <div className="lg:col-span-5 col-span-3">
           {!response.success ? (
             <div className="min-h-[300px] bg-red-100">
               <h3 className="text-2xl font-bold text-red-500">
@@ -132,38 +137,31 @@ async function page({
           )}
         </div>
         <div className=" col-span-3 border border-primary/10 mt-3 rounded-lg px-3 py-8">
-          {!isMobile && (
-            <>
-              <div className="grid grid-cols-2 gap-4">
-                <Button
-                  size={"lg"}
-                  className="flex items-center md:gap-3 gap-1"
-                >
-                  <Image
-                    src={"/images/whatsapp.svg"}
-                    alt="whatsapp"
-                    width={20}
-                    height={20}
-                  />
-                  <p className="text-primary-foreground">WhatsApp</p>
-                </Button>
-                <Button
-                  variant={"outline"}
-                  size={"lg"}
-                  className="flex items-center md:gap-3 gap-1"
-                >
-                  <Image
-                    src={"/images/phone-call.svg"}
-                    alt="phone call"
-                    width={25}
-                    height={25}
-                  />
-                  <p>Call</p>
-                </Button>
-              </div>
-              <Separator className="my-8" />
-            </>
-          )}
+          <div className="grid grid-cols-2 gap-4">
+            <Button size={"lg"} className="flex items-center md:gap-3 gap-1">
+              <Image
+                src={"/images/whatsapp.svg"}
+                alt="whatsapp"
+                width={20}
+                height={20}
+              />
+              <p className="text-primary-foreground">WhatsApp</p>
+            </Button>
+            <Button
+              variant={"outline"}
+              size={"lg"}
+              className="flex items-center md:gap-3 gap-1"
+            >
+              <Image
+                src={"/images/phone-call.svg"}
+                alt="phone call"
+                width={25}
+                height={25}
+              />
+              <p>Call</p>
+            </Button>
+          </div>
+          <Separator className="my-8" />
 
           <ContactForm />
           <Separator className="my-8" />
@@ -212,7 +210,7 @@ async function page({
           />
         </div>
       )}
-      <IslamabadPageContent />
+      <PeshawarPageContent />
     </>
   );
 }

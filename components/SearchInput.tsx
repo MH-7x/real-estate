@@ -25,8 +25,10 @@ import {
 } from "@/components/ui/command";
 import Form from "next/form";
 import { Button } from "./ui/button";
+import { useState } from "react";
 
 function SearchInput() {
+  const [query, setQuery] = useState<string>("");
   return (
     <>
       <Dialog>
@@ -48,12 +50,20 @@ function SearchInput() {
             <Form className="" action={"/search"}>
               <CommandInput
                 name="query"
+                value={query}
+                onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+                  setQuery(e.target.value)
+                }
                 placeholder="Type a city name or search..."
               />
 
               <CommandEmpty>
                 <span className="font-semibold"> Search For</span>{" "}
-                <Button size={"sm"} type="submit" className="mx-auto"></Button>
+                <DialogTrigger asChild>
+                  <Button size={"sm"} type="submit" className="mx-auto">
+                    {query}
+                  </Button>
+                </DialogTrigger>
               </CommandEmpty>
             </Form>
             <CommandList className="ss">

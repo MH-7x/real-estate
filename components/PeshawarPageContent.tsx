@@ -3,49 +3,50 @@ import React from "react";
 
 const areasInIslamabad = [
   {
-    name: "DHA Islamabad",
+    name: "DHA Peshawar",
     description:
-      "A well-planned community offering a luxurious lifestyle and state-of-the-art amenities.",
+      "A premium housing society offering state-of-the-art amenities and high-end living standards.",
   },
   {
-    name: "Bahria Town Islamabad",
+    name: "Hayatabad",
     description:
-      "Known for its gated community, modern facilities, and affordability.",
+      "A well-established area known for its organized sectors, excellent facilities, and strong community living.",
   },
   {
-    name: "F-6 and F-7 Sectors",
+    name: "Regi Model Town",
     description:
-      "Ideal for high-end residential living with proximity to major commercial hubs.",
+      "A fast-growing housing society ideal for residential and investment purposes.",
   },
   {
-    name: "Blue Area",
+    name: "University Town",
     description:
-      "The city's primary commercial zone, perfect for corporate investments.",
+      "Known for its central location and excellent access to educational and healthcare facilities.",
   },
   {
-    name: "E-11 and G-13",
+    name: "Saddar and Ring Road",
     description:
-      "Emerging sectors with modern housing options at competitive prices.",
+      "Bustling commercial hubs with immense investment potential for businesses and retailers.",
   },
 ];
 
-function IslamabadPageContent() {
+function PeshawarPageContent() {
   return (
-    <section className="md:w-11/12 w-full mx-auto mt-16 min-h-screen">
+    <section className="md:w-11/12  w-full mx-auto mt-16 min-h-screen">
       <section className="py-24 ">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-10 lg:mb-16 flex justify-center items-center flex-col gap-x-0 gap-y-6 lg:gap-y-0 lg:flex-row lg:justify-between max-md:max-w-lg max-md:mx-auto">
             <div className="relative w-full text-center lg:text-left lg:w-2/4">
               <h2 className="text-4xl font-bold text-gray-900 md:leading-[3.25rem] lg:mb-6 mx-auto max-w-max lg:max-w-md lg:mx-0">
-                Find Affordable Properties in Islamabad
+                Find Affordable Properties in Peshawar
               </h2>
             </div>
             <div className="relative w-full text-center  lg:text-left lg:w-2/4">
               <p className="md:text-lg text-base font-normal text-gray-500 mb-5">
-                As one of the most planned cities in South Asia, Islamabad is
-                divided into organized sectors, offering a wide range of
-                residential and commercial properties to suit various budgets
-                and preferences.
+                Peshawar, one of Pakistan&apos;s oldest and most culturally rich
+                cities, offers a unique blend of tradition and modernity.
+                Divided into well-developed areas, Peshawar provides a wide
+                range of residential and commercial properties tailored to
+                different budgets and lifestyles.
               </p>
               <a
                 href="#"
@@ -71,12 +72,11 @@ function IslamabadPageContent() {
             </div>
           </div>
           <p className="md:text-lg text-base font-normal text-gray-500 mb-5">
-            Looking to buy properties in Islamabad within your budget?
-            Islamabad, the capital city of Pakistan, is renowned for its modern
-            infrastructure, scenic beauty, and high-quality living standards.
-            Nestled against the lush green Margalla Hills, Islamabad offers a
-            perfect blend of urban sophistication and natural serenity, making
-            it an ideal place for real estate investment.
+            Looking to buy properties in Peshawar within your budget? Peshawar,
+            the capital of Khyber Pakhtunkhwa, is known for its historical
+            significance, thriving trade markets, and growing modern
+            infrastructure. With its vibrant culture and strategic location,
+            Peshawar is an excellent choice for real estate investment.
           </p>
         </div>
       </section>
@@ -88,10 +88,10 @@ function IslamabadPageContent() {
               Investments
             </span>
             <h2 className="text-4xl text-center font-bold text-gray-900 py-5">
-              Why Invest in Islamabad Properties?
+              Why Invest in Peshawar Properties?
             </h2>
             <p className="max-w-4xl mx-auto">
-              Islamabad offers modern infrastructure, a safe environment, and
+              Peshawar offers modern infrastructure, a safe environment, and
               high investment returns, making it ideal for residential and
               commercial real estate.
             </p>
@@ -117,12 +117,12 @@ function IslamabadPageContent() {
                 </svg>
               </div>
               <h4 className="text-lg font-medium text-gray-900 mb-3 capitalize">
-                Modern Infrastructure and High-Quality Living
+                Growing Infrastructure and Real Estate Potential
               </h4>
               <p className="text-base font-normal text-gray-600">
-                Islamabad is famous for its clean environment, well-maintained
-                roads, and high-end facilities, attracting investors and
-                residents nationwide.
+                Peshawar is rapidly modernizing, with new housing societies,
+                improved road networks, and upgraded facilities attracting
+                investors and residents nationwide.
               </p>
             </div>
             <div className="relative w-full text-center max-md:max-w-sm max-md:mx-auto group md:w-2/5 lg:w-1/4">
@@ -158,12 +158,12 @@ function IslamabadPageContent() {
                 </svg>
               </div>
               <h4 className="text-lg font-medium text-gray-900 mb-3 capitalize">
-                Government and Diplomatic Hub
+                Economic Hub and Cultural Heritage
               </h4>
               <p className="text-base font-normal text-gray-600">
-                Being the seat of the federal government and home to many
-                embassies, Islamabad holds immense strategic importance,
-                boosting its real estate demand.
+                As a key trade and business center with deep-rooted cultural
+                heritage, Peshawar offers unmatched real estate opportunities in
+                a thriving urban setting.
               </p>
             </div>
             <div className="relative w-full text-center max-md:max-w-sm max-md:mx-auto group md:w-2/5 lg:w-1/4">
@@ -185,12 +185,12 @@ function IslamabadPageContent() {
                 </svg>
               </div>
               <h4 className="text-lg font-medium text-gray-900 mb-3 capitalize">
-                Strong Population Growth
+                Strong Population Growth and Demand
               </h4>
               <p className="text-base font-normal text-gray-600">
-                With a population of over 1.2 million (as per the latest
-                census), Islamabad continues to grow as a key urban center in
-                Pakistan.
+                With a population of over 2.3 million (as per the latest
+                census), Peshawar continues to expand, driving demand for
+                residential and commercial properties.
               </p>
             </div>
             <div className="relative w-full text-center max-md:max-w-sm max-md:mx-auto group md:w-2/5 lg:w-1/4">
@@ -212,11 +212,12 @@ function IslamabadPageContent() {
                 </svg>
               </div>
               <h4 className="text-lg font-medium text-gray-900 mb-3 capitalize">
-                Safe and Secure Environment
+                Affordable Property Options
               </h4>
               <p className="text-base font-normal text-gray-600">
-                Known as one of Pakistan&apos;s safest cities, Islamabad offers
-                peace of mind for families and professionals alike.
+                Compared to other major cities, Peshawar provides a variety of
+                affordable property options, making it a favorable market for
+                both investors and homebuyers.
               </p>
             </div>
           </div>
@@ -230,7 +231,7 @@ function IslamabadPageContent() {
             </span>
           </div>
           <h2 className="text-4xl  text-center mt-6">
-            Explore Property Types in Islamabad
+            Explore Property Types in Peshawar
           </h2>
           <p className="text-center mt-6 text-lg font-light text-gray-500">
             The time is now for it to be okay to be great. For being a bright
@@ -257,8 +258,9 @@ function IslamabadPageContent() {
               Residential Properties
             </h2>
             <p className="font-light text-sm text-gray-500 mb-3">
-              Choose from modern apartments, luxurious villas, and elegant
-              houses in prime sectors like F-6, F-7, and DHA.
+              Find a diverse range of options, including modern apartments,
+              traditional houses, and villas in areas like Hayatabad, DHA
+              Peshawar, and Regi Model Town.
             </p>
             <a
               className="text-indigo-500 flex items-center hover:text-indigo-600"
@@ -298,8 +300,8 @@ function IslamabadPageContent() {
               Commercial Properties
             </h2>
             <p className="font-light text-sm text-gray-500 mb-3">
-              Invest in bustling business districts such as Blue Area, G-9
-              Markaz, and I-8 Markaz.
+              Invest in bustling commercial hubs such as University Road,
+              Saddar, and Ring Road, ideal for retail and business activities.
             </p>
             <a
               className="text-green-500 flex items-center hover:text-green-600"
@@ -339,8 +341,9 @@ function IslamabadPageContent() {
               Plots and Land
             </h2>
             <p className="font-light text-sm text-gray-500 mb-3">
-              Secure plots in premium areas for building your dream home or
-              long-term investment.
+              Secure plots in emerging societies like DHA Peshawar, Regi Model
+              Town, and Sheikh Yaseen Town for long-term investment or building
+              your dream home.
             </p>
             <a
               className="text-red-500 flex items-center hover:text-red-600"
@@ -364,17 +367,18 @@ function IslamabadPageContent() {
         </div>
       </section>
 
-      <div className="bg-white py-24">
-        <div className="mx-auto max-w-7xl px-3 lg:px-8">
+      <div className="mx-auto max-w-7xl px-3 lg:px-8">
+        <div className="mx-auto max-w-7xl lg:px-8">
           <div className="mx-auto max-w-2xl lg:text-center">
             <p className="text-base bg-primary/10 px-2 py-1 mb-1 rounded-md w-max mx-auto text-primary">
               areas to buy
             </p>
-            <h2>Top Areas to Buy Properties in Islamabad</h2>
+            <h2>Top Areas to Buy Properties in Peshawar</h2>
             <p className="mt-6 md:text-lg/8 text-base text-gray-600">
-              Discover the top areas to buy properties in Islamabad, including
-              DHA, Bahria Town, F-6, Blue Area, and E-11, offering modern
-              amenities, prime locations, and excellent investment potential.
+              Discover the top areas to buy properties in Peshawar, including
+              DHA Peshawar, Hayatabad, Regi Model Town, University Town, and
+              Saddar, offering modern amenities, strategic locations, and
+              excellent investment potential.
             </p>
           </div>
           <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
@@ -400,16 +404,16 @@ function IslamabadPageContent() {
       <div className="py-20 md:px-0 px-3 flex flex-col gap-y-4 max-w-4xl mx-auto -mt-10">
         <h2>Conclusion</h2>
         <p className="md:text-lg text-base">
-          Islamabad, with its exceptional living standards, modern
-          infrastructure, and scenic beauty, stands out as a prime destination
-          for real estate investment. Whether you are looking for affordable
-          homes, luxurious villas, or lucrative commercial properties, Islamabad
-          has something for everyone. Invest in the capital city today and take
-          the first step towards a brighter future.
+          Peshawar, with its rich history, modern developments, and expanding
+          real estate market, stands out as a promising destination for property
+          investment. Whether you&apos;re searching for affordable homes,
+          premium villas, or high-potential commercial spaces, Peshawar has
+          something to offer everyone. Explore the city&apos;s vibrant property
+          market today and take the first step toward securing your future!
         </p>
       </div>
     </section>
   );
 }
 
-export default IslamabadPageContent;
+export default PeshawarPageContent;

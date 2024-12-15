@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const city = searchParams.get("city");
+  const purpose = searchParams.get("purpose");
 
   if (!city) {
     return NextResponse.json({
@@ -16,26 +17,36 @@ export async function GET(req: NextRequest) {
   try {
     await dbConnect();
 
-    console.log("Comes To Get City Data");
+    console.log("Fetching Data for City and Purpose");
 
-    // Step 1: Count the total documents for the specified city
-    const totalCount = await Property.countDocuments({ "address.city": city });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const query: Record<string, any> = {
+      "address.city": city,
+    };
+
+    if (purpose) {
+      query.purpose = purpose; // Add the purpose filter if provided
+    }
+
+    // Step 2: Count the total documents for the specified filters
+    const totalCount = await Property.countDocuments(query);
     console.log("Completed Counting ...");
+
     // If no documents are found, return an appropriate response
     if (totalCount === 0) {
       return NextResponse.json({
         success: false,
-        message: `No properties found for city: ${city}`,
+        message: `No properties found for city: ${city}${
+          purpose ? ` and purpose: ${purpose}` : ""
+        }`,
         totalCount,
       });
     }
 
-    // Step 2: Perform the aggregation
+    // Step 3: Perform the aggregation
     const filters = await Property.aggregate([
       {
-        $match: {
-          "address.city": city,
-        },
+        $match: query, // Match the city and purpose dynamically
       },
       {
         $group: {
@@ -54,6 +65,7 @@ export async function GET(req: NextRequest) {
         },
       },
     ]);
+
     console.log("Completed Filtering ...");
     return NextResponse.json({
       message: "Fetched data successfully",
