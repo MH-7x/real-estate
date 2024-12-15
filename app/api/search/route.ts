@@ -14,6 +14,7 @@ interface Pagination {
   totalPages: number;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const buildSearchFilter = (query: QueryParams): Record<string, any> => {
   if (!query.search) return {};
 
