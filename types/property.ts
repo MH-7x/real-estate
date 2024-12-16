@@ -192,6 +192,7 @@ export const cityDistrictData: Record<
     { value: "university town", label: "University Town" },
     { value: "dha peshawar", label: "DHA Peshawar" },
     { value: "sheikh yasin town", label: "Sheikh Yasin Town" },
+    { value: "malak town", label: "Malak Town" },
     { value: "regi model town", label: "Regi Model Town" },
     { value: "gulbahar", label: "Gulbahar" },
     { value: "dilazak road", label: "Dilazak Road" },
@@ -375,6 +376,7 @@ export interface FilterResponse {
 
 export interface Result {
   cities: string[];
+  areas: string[];
   conditions: string[];
   sizes: Size[];
 }

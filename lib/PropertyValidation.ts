@@ -36,7 +36,7 @@ export const PropertySchema = z.object({
     .refine((value) => !value || z.string().url().safeParse(value).success, {
       message: "Please enter a valid URL",
     })
-    .default(""),
+    .default(" "),
   amenities: z
     .array(z.object({ name: z.string(), value: z.string() }))
     .optional(),

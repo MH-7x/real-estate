@@ -1,6 +1,7 @@
 import Cities from "@/components/Cities";
 import FAQs from "@/components/FAQs";
 import HeroSection from "@/components/heroSection";
+import Last from "@/components/Last";
 import PopularProperties from "@/components/PopularProperties";
 import RecAdd from "@/components/RecAdd";
 import OurTeam from "@/components/Team";
@@ -100,9 +101,17 @@ async function page() {
 
       <WhyChooseUs />
       <Cities />
-      <Testimonials />
+      <section className="py-14 lg:py-24 ">
+        <h2 className="text-center">
+          Trusted By <span className="text-primary">10,000+</span> Clients{" "}
+          <br />
+          In Pakistan
+        </h2>
+        <Testimonials />
+      </section>
       <OurTeam />
       <FAQs faqs={faqs} />
+      <Last />
     </section>
   );
 }

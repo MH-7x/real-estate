@@ -63,7 +63,7 @@ const propertySchema = new Schema<Property>({
   amenities: [{ name: String, value: String }], //
   description: { type: String }, //
   images: [{ type: String }], //
-  FacebookVideoLink: { type: String },
+  FacebookVideoLink: { type: String, default: "" },
   isFeatured: { type: Boolean, default: false }, //
   discount: {
     type: Number,

@@ -68,6 +68,7 @@ export default function ProperyForm({
   property?: SinResProperty;
 }) {
   const router = useRouter();
+
   const [selectedCity, setSelectedCity] = useState<string | null>(
     property?.address.city || null
   );
@@ -110,7 +111,9 @@ export default function ProperyForm({
       bathrooms: String(property?.bathrooms) || "",
       PropertyName: property?.PropertyName || "",
       price: String(property?.price) || "",
-      FacebookVideoLink: String(property?.FacebookVideoLink) || "",
+      FacebookVideoLink:
+        (property?.FacebookVideoLink && String(property.FacebookVideoLink)) ||
+        "",
       amenities: property?.amenities || [],
       description: property?.description || "",
       isFeatured: property?.isFeatured || false,
@@ -118,6 +121,8 @@ export default function ProperyForm({
     },
     resolver: zodResolver(PropertySchema),
   });
+
+  const { isDirty } = form.formState;
 
   async function onSubmit(data: z.infer<typeof PropertySchema>) {
     if (images.length <= 0) {
@@ -182,297 +187,150 @@ export default function ProperyForm({
     console.log("Updated images:", images);
   }, [images]);
 
+  // Handle browser/tab close
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = ""; // Show a native browser dialog
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="space-y-6 flex items-start justify-center flex-col w-full "
-      >
-        <FormField
-          control={form.control}
-          name="purpose"
-          render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto">
-              <FormLabel className="text-lg block text-center">
-                What do you want to do?{" "}
-              </FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex space-x-4"
-                >
-                  <FormItem className="flex bg-secondary rounded-md p-3 items-center space-x-1 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="for sell" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Sell Property</FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center bg-secondary rounded-md p-3 space-x-1 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="for rent" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Rent Property</FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="propertyType"
-          render={({}) => (
-            <FormItem className="space-y-3 mx-auto">
-              <FormLabel className="text-lg text-center w-full  block">
-                What kind of property do you have?
-              </FormLabel>
-              <FormControl>
-                <Tabs
-                  defaultValue="Residential"
-                  className="lg:w-[700px] w-full rounded-lg bg-secondary p-4"
-                >
-                  <TabsList className="grid w-full grid-cols-3 mb-5">
-                    <TabsTrigger value="Residential">Residential</TabsTrigger>
-                    <TabsTrigger value="Plot">Plot</TabsTrigger>
-                    <TabsTrigger value="Commercial">Commercial</TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="Residential">
-                    <div className="flex flex-wrap gap-2">
-                      {resident.map((value) => (
-                        <button
-                          type="button"
-                          key={value}
-                          onClick={() => {
-                            form.setValue("propertyType", value);
-                            setProtype(value);
-                          }}
-                          className={cn(
-                            "px-4 py-2 border rounded-full text-sm",
-                            proType === value
-                              ? "bg-primary text-white border-primary"
-                              : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
-                          )}
-                        >
-                          {value}
-                        </button>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="Plot">
-                    <div className="flex flex-wrap gap-2">
-                      {plot.map((value) => (
-                        <button
-                          type="button"
-                          key={value}
-                          onClick={() => {
-                            form.setValue("propertyType", value);
-                            setProtype(value);
-                          }}
-                          className={cn(
-                            "px-4 py-2 border rounded-full text-sm",
-                            proType === value
-                              ? "bg-primary text-white border-primary"
-                              : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
-                          )}
-                        >
-                          {value}
-                        </button>
-                      ))}
-                    </div>
-                  </TabsContent>
-                  <TabsContent value="Commercial">
-                    <div className="flex flex-wrap gap-2">
-                      {commerical.map((value) => (
-                        <button
-                          type="button"
-                          key={value}
-                          onClick={() => {
-                            form.setValue("propertyType", value);
-                            setProtype(value);
-                          }}
-                          className={cn(
-                            "px-4 py-2 border rounded-full text-sm",
-                            proType === value
-                              ? "bg-primary text-white border-primary"
-                              : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
-                          )}
-                        >
-                          {value}
-                        </button>
-                      ))}
-                    </div>
-                  </TabsContent>
-                </Tabs>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address.city"
-          render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
-              <FormLabel className="text-lg block text-center">
-                Which city is your property in?
-              </FormLabel>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "md:w-[500px] w-full justify-between",
-                        !field.value && "text-muted-foreground "
-                      )}
-                    >
-                      {field.value
-                        ? popularCities.find(
-                            (city) => city.value === field.value
-                          )?.label
-                        : "Select city..."}
-                      <ChevronsUpDown className="opacity-50" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="p-0 md:w-[500px] w-80">
-                  <Command>
-                    <CommandInput
-                      placeholder="Search cities..."
-                      className="h-9"
-                    />
-                    <CommandList>
-                      <CommandEmpty>No city found.</CommandEmpty>
-                      <CommandGroup>
-                        {popularCities.map((city) => (
-                          <CommandItem
-                            value={city.label}
-                            key={city.value}
-                            onSelect={() => {
-                              form.setValue("address.city", city.value);
-                              setSelectedCity(city.value);
-                              setDistricts([]);
-                            }}
-                          >
-                            {city.label}
-                            <Check
-                              className={cn(
-                                "",
-                                city.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="address.area"
-          render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
-              <FormLabel className="text-lg block text-center">
-                Which area/district property in?
-              </FormLabel>
-              <Popover>
-                <PopoverTrigger className="" asChild>
-                  <FormControl>
-                    <Button
-                      variant="outline"
-                      role="combobox"
-                      className={cn(
-                        "md:w-[500px] w-full justify-between relative",
-                        !field.value && "text-muted-foreground"
-                      )}
-                    >
-                      {field.value
-                        ? districts.find(
-                            (district) => district.value === field.value
-                          )?.label
-                        : "Select area..."}
-                      <ChevronsUpDown className="opacity-50 absolute top-3 right-4" />
-                    </Button>
-                  </FormControl>
-                </PopoverTrigger>
-                <PopoverContent className="p-0 md:w-[500px] w-80">
-                  <Command className="">
-                    <CommandInput
-                      placeholder="Search area..."
-                      className="h-9"
-                    />
-                    <CommandList>
-                      <CommandEmpty>No area found.</CommandEmpty>
-                      <CommandGroup>
-                        {districts.map((district) => (
-                          <CommandItem
-                            key={district.value}
-                            value={district.label}
-                            onSelect={() => {
-                              form.setValue("address.area", district.value);
-                            }}
-                          >
-                            {district.label}
-                            <Check
-                              className={cn(
-                                "",
-                                district.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0"
-                              )}
-                            />
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </CommandList>
-                  </Command>
-                </PopoverContent>
-              </Popover>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="street"
-          render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
-              <FormLabel className="text-lg block text-center">
-                which street is your property in?
-              </FormLabel>
-              <FormControl>
-                <Input placeholder="street address ..." {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <div className="flex md:w-[500px] w-full gap-1 mx-auto">
+    <>
+      <Form {...form}>
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 flex items-start justify-center flex-col w-full "
+        >
           <FormField
             control={form.control}
-            name="size.value"
+            name="purpose"
             render={({ field }) => (
-              <FormItem className="space-y-3 md:w-[350px] w-[60%]">
-                <FormLabel className="text-lg block">size of propery</FormLabel>
+              <FormItem className="space-y-3 mx-auto">
+                <FormLabel className="text-lg block text-center">
+                  What do you want to do?{" "}
+                </FormLabel>
                 <FormControl>
-                  <Input
-                    type="number"
-                    placeholder="size of property"
-                    {...field}
-                    value={field.value ?? ""}
-                  />
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex space-x-4"
+                  >
+                    <FormItem className="flex bg-secondary rounded-md p-3 items-center space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="for sell" />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        Sell Property
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center bg-secondary rounded-md p-3 space-x-1 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="for rent" />
+                      </FormControl>
+                      <FormLabel className="font-normal">
+                        Rent Property
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="propertyType"
+            render={({}) => (
+              <FormItem className="space-y-3 mx-auto">
+                <FormLabel className="text-lg text-center w-full  block">
+                  What kind of property do you have?
+                </FormLabel>
+                <FormControl>
+                  <Tabs
+                    defaultValue="Residential"
+                    className="lg:w-[700px] w-full rounded-lg bg-secondary p-4"
+                  >
+                    <TabsList className="grid w-full grid-cols-3 mb-5">
+                      <TabsTrigger value="Residential">Residential</TabsTrigger>
+                      <TabsTrigger value="Plot">Plot</TabsTrigger>
+                      <TabsTrigger value="Commercial">Commercial</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="Residential">
+                      <div className="flex flex-wrap gap-2">
+                        {resident.map((value) => (
+                          <button
+                            type="button"
+                            key={value}
+                            onClick={() => {
+                              form.setValue("propertyType", value);
+                              setProtype(value);
+                            }}
+                            className={cn(
+                              "px-4 py-2 border rounded-full text-sm",
+                              proType === value
+                                ? "bg-primary text-white border-primary"
+                                : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
+                            )}
+                          >
+                            {value}
+                          </button>
+                        ))}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="Plot">
+                      <div className="flex flex-wrap gap-2">
+                        {plot.map((value) => (
+                          <button
+                            type="button"
+                            key={value}
+                            onClick={() => {
+                              form.setValue("propertyType", value);
+                              setProtype(value);
+                            }}
+                            className={cn(
+                              "px-4 py-2 border rounded-full text-sm",
+                              proType === value
+                                ? "bg-primary text-white border-primary"
+                                : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
+                            )}
+                          >
+                            {value}
+                          </button>
+                        ))}
+                      </div>
+                    </TabsContent>
+                    <TabsContent value="Commercial">
+                      <div className="flex flex-wrap gap-2">
+                        {commerical.map((value) => (
+                          <button
+                            type="button"
+                            key={value}
+                            onClick={() => {
+                              form.setValue("propertyType", value);
+                              setProtype(value);
+                            }}
+                            className={cn(
+                              "px-4 py-2 border rounded-full text-sm",
+                              proType === value
+                                ? "bg-primary text-white border-primary"
+                                : "bg-white border-muted-foreground hover:bg-muted hover:text-foreground"
+                            )}
+                          >
+                            {value}
+                          </button>
+                        ))}
+                      </div>
+                    </TabsContent>
+                  </Tabs>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -480,20 +338,235 @@ export default function ProperyForm({
           />
           <FormField
             control={form.control}
-            name="size.unit"
+            name="address.city"
             render={({ field }) => (
-              <FormItem className="space-y-3 md:w-[150px] w-[40%] mt-10">
+              <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
+                <FormLabel className="text-lg block text-center">
+                  Which city is your property in?
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "md:w-[500px] w-full justify-between",
+                          !field.value && "text-muted-foreground "
+                        )}
+                      >
+                        {field.value
+                          ? popularCities.find(
+                              (city) => city.value === field.value
+                            )?.label
+                          : "Select city..."}
+                        <ChevronsUpDown className="opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0 md:w-[500px] w-80">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search cities..."
+                        className="h-9"
+                      />
+                      <CommandList>
+                        <CommandEmpty>No city found.</CommandEmpty>
+                        <CommandGroup>
+                          {popularCities.map((city) => (
+                            <CommandItem
+                              value={city.label}
+                              key={city.value}
+                              onSelect={() => {
+                                form.setValue("address.city", city.value);
+                                setSelectedCity(city.value);
+                                setDistricts([]);
+                              }}
+                            >
+                              {city.label}
+                              <Check
+                                className={cn(
+                                  "",
+                                  city.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="address.area"
+            render={({ field }) => (
+              <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
+                <FormLabel className="text-lg block text-center">
+                  Which area/district property in?
+                </FormLabel>
+                <Popover>
+                  <PopoverTrigger className="" asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "md:w-[500px] w-full justify-between relative",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? districts.find(
+                              (district) => district.value === field.value
+                            )?.label
+                          : "Select area..."}
+                        <ChevronsUpDown className="opacity-50 absolute top-3 right-4" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="p-0 md:w-[500px] w-80">
+                    <Command className="">
+                      <CommandList>
+                        <CommandEmpty>No area found.</CommandEmpty>
+                        <CommandGroup>
+                          {districts.map((district) => (
+                            <CommandItem
+                              key={district.value}
+                              value={district.label}
+                              onSelect={() => {
+                                form.setValue("address.area", district.value);
+                              }}
+                            >
+                              {district.label}
+                              <Check
+                                className={cn(
+                                  "",
+                                  district.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="street"
+            render={({ field }) => (
+              <FormItem className="space-y-3 mx-auto md:w-[500px] w-80">
+                <FormLabel className="text-lg block text-center">
+                  which street is your property in?
+                </FormLabel>
+                <FormControl>
+                  <Input placeholder="street address ..." {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <div className="flex md:w-[500px] w-full gap-1 mx-auto">
+            <FormField
+              control={form.control}
+              name="size.value"
+              render={({ field }) => (
+                <FormItem className="space-y-3 md:w-[350px] w-[60%]">
+                  <FormLabel className="text-lg block">
+                    size of propery
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder="size of property"
+                      {...field}
+                      value={field.value ?? ""}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="size.unit"
+              render={({ field }) => (
+                <FormItem className="space-y-3 md:w-[150px] w-[40%] mt-10">
+                  <Select onValueChange={field.onChange} {...field}>
+                    <SelectTrigger className="">
+                      <SelectValue placeholder=" Units" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectItem value="Marla">Marla</SelectItem>
+                        <SelectItem value="Sq. Ft">Sq. Ft</SelectItem>
+                        <SelectItem value="Sq. M">Sq. M</SelectItem>
+                        <SelectItem value="Sq. Yd">Sq. Yd</SelectItem>
+                        <SelectItem value="Kanal">Kanal</SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          {images.length > 0 && (
+            <div className="w-full md:w-[500px] mx-auto transition-all bg-secondary min-h-32 rounded-lg p-5 flex items-start justify-start flex-wrap gap-5">
+              <ImagesPreview images={images} />
+            </div>
+          )}
+
+          <UploadWidget onUpload={handleUpload}>
+            {({ open }) => (
+              <Button
+                type="button"
+                className="w-full mx-auto md:w-96"
+                size={"lg"}
+                onClick={() => {
+                  open();
+                }}
+              >
+                Upload Image <Upload />
+              </Button>
+            )}
+          </UploadWidget>
+
+          <FormField
+            control={form.control}
+            name="condition"
+            render={({ field }) => (
+              <FormItem className="space-y-3 mx-auto md:w-[500px] w-full mt-10">
+                <FormLabel className="text-lg block text-center">
+                  What is the Property Condition
+                </FormLabel>
                 <Select onValueChange={field.onChange} {...field}>
-                  <SelectTrigger className="">
-                    <SelectValue placeholder=" Units" />
+                  <SelectTrigger className="md:w-[500px] w-full">
+                    <SelectValue placeholder=" select property condition" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectGroup>
-                      <SelectItem value="Marla">Marla</SelectItem>
-                      <SelectItem value="Sq. Ft">Sq. Ft</SelectItem>
-                      <SelectItem value="Sq. M">Sq. M</SelectItem>
-                      <SelectItem value="Sq. Yd">Sq. Yd</SelectItem>
-                      <SelectItem value="Kanal">Kanal</SelectItem>
+                      <SelectLabel>Property Condition</SelectLabel>
+                      {conditions.map((condition) => (
+                        <SelectItem key={condition} value={condition}>
+                          {condition}
+                        </SelectItem>
+                      ))}
                     </SelectGroup>
                   </SelectContent>
                 </Select>
@@ -501,249 +574,200 @@ export default function ProperyForm({
               </FormItem>
             )}
           />
-        </div>
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem className="space-y-3 md:w-[500px] w-full mx-auto">
+                <FormLabel className="text-lg text-center block">
+                  What is Asking Price
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    placeholder="size of property"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        {images.length > 0 && (
-          <div className="w-full md:w-[500px] mx-auto transition-all bg-secondary min-h-32 rounded-lg p-5 flex items-start justify-start flex-wrap gap-5">
-            <ImagesPreview images={images} />
-          </div>
-        )}
+          <FormField
+            control={form.control}
+            name="bedrooms"
+            render={({}) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full">
+                <FormLabel className="text-lg block text-center">
+                  How many bedrooms does it have?
+                </FormLabel>
 
-        <UploadWidget onUpload={handleUpload}>
-          {({ open }) => (
-            <Button
-              type="button"
-              className="w-full mx-auto md:w-96"
-              size={"lg"}
-              onClick={() => {
-                open();
-              }}
-            >
-              Upload Image <Upload />
-            </Button>
-          )}
-        </UploadWidget>
-
-        <FormField
-          control={form.control}
-          name="condition"
-          render={({ field }) => (
-            <FormItem className="space-y-3 mx-auto md:w-[500px] w-full mt-10">
-              <FormLabel className="text-lg block text-center">
-                What is the Property Condition
-              </FormLabel>
-              <Select onValueChange={field.onChange} {...field}>
-                <SelectTrigger className="md:w-[500px] w-full">
-                  <SelectValue placeholder=" size of property" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    <SelectLabel>Property Condition</SelectLabel>
-                    {conditions.map((condition) => (
-                      <SelectItem key={condition} value={condition}>
-                        {condition}
-                      </SelectItem>
+                <FormControl>
+                  <div className="flex flex-wrap gap-2">
+                    {bedroomOptions.map((option) => (
+                      <button
+                        type="button"
+                        key={option.value}
+                        onClick={() => {
+                          form.setValue("bedrooms", option.value);
+                          setSelected(option.value);
+                        }}
+                        className={cn(
+                          "px-4 py-2 border rounded-full text-sm",
+                          selected === option.value
+                            ? "bg-primary text-white border-primary"
+                            : "bg-white text-muted-foreground border-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {option.label}
+                      </button>
                     ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="price"
-          render={({ field }) => (
-            <FormItem className="space-y-3 md:w-[500px] w-full mx-auto">
-              <FormLabel className="text-lg text-center block">
-                What is Asking Price
-              </FormLabel>
-              <FormControl>
-                <Input
-                  type="number"
-                  placeholder="size of property"
-                  {...field}
-                />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="bathrooms"
+            render={({}) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full">
+                <FormLabel className="text-lg block text-center">
+                  How many bedrooms does it have?
+                </FormLabel>
+                <FormControl>
+                  <div className="flex flex-wrap gap-2">
+                    {bathroomsOptions.map((option) => (
+                      <button
+                        type="button"
+                        key={option.value}
+                        onClick={() => {
+                          form.setValue("bathrooms", option.value);
+                          setBathSelect(option.value);
+                        }}
+                        className={cn(
+                          "px-4 py-2 border rounded-full text-sm",
+                          BathSelect === option.value
+                            ? "bg-primary text-white border-primary"
+                            : "bg-white text-muted-foreground border-muted-foreground hover:bg-muted hover:text-foreground"
+                        )}
+                      >
+                        {option.label}
+                      </button>
+                    ))}
+                  </div>
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
-        <FormField
-          control={form.control}
-          name="bedrooms"
-          render={({}) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full">
-              <FormLabel className="text-lg block text-center">
-                How many bedrooms does it have?
-              </FormLabel>
+          <FormField
+            control={form.control}
+            name="PropertyName"
+            render={({ field }) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
+                <FormLabel className="text-lg text-center block">
+                  Whats the property name
+                </FormLabel>
+                <FormControl className="">
+                  <Input
+                    type="text"
+                    placeholder="property name"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
 
-              <FormControl>
-                <div className="flex flex-wrap gap-2">
-                  {bedroomOptions.map((option) => (
-                    <button
-                      type="button"
-                      key={option.value}
-                      onClick={() => {
-                        form.setValue("bedrooms", option.value);
-                        setSelected(option.value);
-                      }}
-                      className={cn(
-                        "px-4 py-2 border rounded-full text-sm",
-                        selected === option.value
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-muted-foreground border-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="FacebookVideoLink"
+            render={({ field }) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
+                <FormLabel className="text-lg text-center block">
+                  Facebook Video Link
+                </FormLabel>
+                <FormControl className="">
+                  <Input
+                    type="text"
+                    placeholder="past facebook video link"
+                    {...field}
+                    value={field.value ?? ""}
+                  />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="description"
+            render={({ field }) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
+                <FormLabel className="text-lg text-center block">
+                  Detail Property Description
+                </FormLabel>
+                <FormControl className="">
+                  <Textarea
+                    placeholder="property description"
+                    {...field}
+                    value={field.value ?? ""}
+                  ></Textarea>
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="discount"
+            render={({ field }) => (
+              <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
+                <FormLabel className="text-lg text-center block">
+                  Discount Value (if it is )
+                </FormLabel>
+                <FormControl className="">
+                  <Input type="number" placeholder="discount" {...field} />
+                </FormControl>
+
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="isFeatured"
+            render={({ field }) => (
+              <FormItem className="flex flex-row items-center md:w-[500px] mx-auto w-full justify-between rounded-lg border p-3 shadow-sm">
+                <div className="space-y-0.5">
+                  <FormLabel>Is this property featured</FormLabel>
+                  <FormDescription>
+                    This property will appear on the main home page
+                  </FormDescription>
                 </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="bathrooms"
-          render={({}) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full">
-              <FormLabel className="text-lg block text-center">
-                How many bedrooms does it have?
-              </FormLabel>
-              <FormControl>
-                <div className="flex flex-wrap gap-2">
-                  {bathroomsOptions.map((option) => (
-                    <button
-                      type="button"
-                      key={option.value}
-                      onClick={() => {
-                        form.setValue("bathrooms", option.value);
-                        setBathSelect(option.value);
-                      }}
-                      className={cn(
-                        "px-4 py-2 border rounded-full text-sm",
-                        BathSelect === option.value
-                          ? "bg-primary text-white border-primary"
-                          : "bg-white text-muted-foreground border-muted-foreground hover:bg-muted hover:text-foreground"
-                      )}
-                    >
-                      {option.label}
-                    </button>
-                  ))}
-                </div>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="PropertyName"
-          render={({ field }) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
-              <FormLabel className="text-lg text-center block">
-                Whats the property name
-              </FormLabel>
-              <FormControl className="">
-                <Input
-                  type="text"
-                  placeholder="property name"
-                  {...field}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="FacebookVideoLink"
-          render={({ field }) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
-              <FormLabel className="text-lg text-center block">
-                Facebook Video Link
-              </FormLabel>
-              <FormControl className="">
-                <Input
-                  type="text"
-                  placeholder="past facebook video link"
-                  {...field}
-                  value={field.value ?? ""}
-                />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
-              <FormLabel className="text-lg text-center block">
-                Detail Property Description
-              </FormLabel>
-              <FormControl className="">
-                <Textarea
-                  placeholder="property description"
-                  {...field}
-                  value={field.value ?? ""}
-                ></Textarea>
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          control={form.control}
-          name="discount"
-          render={({ field }) => (
-            <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
-              <FormLabel className="text-lg text-center block">
-                Discount Value (if it is )
-              </FormLabel>
-              <FormControl className="">
-                <Input type="number" placeholder="discount" {...field} />
-              </FormControl>
-
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="isFeatured"
-          render={({ field }) => (
-            <FormItem className="flex flex-row items-center md:w-[500px] mx-auto w-full justify-between rounded-lg border p-3 shadow-sm">
-              <div className="space-y-0.5">
-                <FormLabel>Is this property featured</FormLabel>
-                <FormDescription>
-                  This property will appear on the main home page
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Switch
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                />
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <Button className="py-7 md:w-[500px] w-full mx-auto" type="submit">
-          {property ? "Update Now" : "Create Now"} <Send />
-        </Button>
-      </form>
-    </Form>
+                <FormControl>
+                  <Switch
+                    checked={field.value}
+                    onCheckedChange={field.onChange}
+                  />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+          <Button className="py-7 md:w-[500px] w-full mx-auto" type="submit">
+            {property ? "Update Now" : "Create Now"} <Send />
+          </Button>
+        </form>
+      </Form>
+    </>
   );
 }

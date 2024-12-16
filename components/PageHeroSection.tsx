@@ -4,10 +4,12 @@ function PageHeroSection({
   length,
   city,
   desc,
+  type,
 }: {
   length?: number;
   city?: string;
   desc?: string;
+  type?: "Sale" | "Rent";
 }) {
   return (
     <section className="relative bg-gradient-to-t to-black/70 via-black/80 from-black/90 text-white md:pt-32 pt-32 pb-10 md:px-8 px-3">
@@ -28,7 +30,7 @@ function PageHeroSection({
 
         {/* Section Title */}
         <h1 className="text-3xl md:text-5xl md:max-w-2xl text-white drop-shadow-lg font-bold mb-6">
-          Properties For Sell In {city}
+          Properties For {type} In {city}
         </h1>
 
         {/* Section Description */}

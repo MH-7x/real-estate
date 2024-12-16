@@ -13,10 +13,11 @@ function SideFilterComponent({ filters }: { filters: Result[] }) {
   const [activeCity, setActiveCity] = React.useState("");
   const [activeCondition, setactiveCondition] = React.useState("");
   const [activeSize, setactiveSize] = React.useState("");
-
+  const [activeArea, setActiveArea] = React.useState("");
   const cities = filters && filters[0].cities;
   const conditions = filters && filters[0].conditions;
   const sizes = filters && filters[0].sizes;
+  const areas = filters && filters[0].areas;
   const router = useRouter();
 
   const updateCityParam = (newCity: string) => {
@@ -38,6 +39,12 @@ function SideFilterComponent({ filters }: { filters: Result[] }) {
     url.searchParams.set("sizeValue", sizeValue.toString());
     url.searchParams.set("sizeUnit", sizeUnit.toString());
     setactiveSize(`${sizeValue}-${sizeUnit}`);
+    router.push(`${url.pathname}?${url.searchParams.toString()}`);
+  };
+  const updateAreaParam = (newArea: string) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("area", newArea.toString());
+    setActiveArea(newArea);
     router.push(`${url.pathname}?${url.searchParams.toString()}`);
   };
 
@@ -97,6 +104,65 @@ function SideFilterComponent({ filters }: { filters: Result[] }) {
                     </div>
                   </div>
                   <label className="text-sm text-gray-600">{city}</label>
+                </div>
+              ))}
+          </div>
+        </DisclosurePanel>
+      </Disclosure>
+      <Disclosure as="div" className="border-b border-gray-200 py-6">
+        <h3 className="-my-3 flow-root">
+          <DisclosureButton className="group flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+            <span className="font-medium text-gray-900">Areas</span>
+            <span className="ml-6 flex items-center">
+              <PlusIcon
+                aria-hidden="true"
+                className="size-5 group-data-[open]:hidden"
+              />
+              <MinusIcon
+                aria-hidden="true"
+                className="size-5 group-[&:not([data-open])]:hidden"
+              />
+            </span>
+          </DisclosureButton>
+        </h3>
+        <DisclosurePanel className="pt-6">
+          <div className="space-y-4">
+            {areas &&
+              areas.map((area) => (
+                <div key={area} className="flex gap-3">
+                  <div className="flex h-5 shrink-0 items-center">
+                    <div className="group grid size-4 grid-cols-1">
+                      <input
+                        onClick={() => updateAreaParam(area)}
+                        type="checkbox"
+                        defaultChecked={area === activeArea}
+                        className={`col-start-1 cursor-pointer row-start-1 appearance-none rounded border border-gray-300 bg-white ${
+                          activeArea === area ? "border-primary bg-primary" : ""
+                        }`}
+                      />
+                      <svg
+                        fill="none"
+                        viewBox="0 0 14 14"
+                        className="pointer-events-none col-start-1 row-start-1 size-3.5 self-center justify-self-center stroke-white group-has-[:disabled]:stroke-gray-950/25"
+                      >
+                        <path
+                          d="M3 8L6 11L11 3.5"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-[:checked]:opacity-100"
+                        />
+                        <path
+                          d="M3 7H11"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          className="opacity-0 group-has-[:indeterminate]:opacity-100"
+                        />
+                      </svg>
+                    </div>
+                  </div>
+                  <label className="text-sm text-gray-600">{area}</label>
                 </div>
               ))}
           </div>

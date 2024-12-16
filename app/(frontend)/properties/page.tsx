@@ -107,6 +107,7 @@ async function page({
 
     isFeatured: params.isFeatured ? params.isFeatured === "true" : undefined,
   };
+  console.log("area :: ", filters.area);
 
   const response: Main = await getProperties(page, limit, filters);
 

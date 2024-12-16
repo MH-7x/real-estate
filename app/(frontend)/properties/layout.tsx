@@ -5,6 +5,7 @@ import { FilterResponse } from "@/types/property";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 
 import { ChevronDownIcon, TrainFrontTunnelIcon } from "lucide-react";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -32,8 +33,8 @@ const sortOptions = [
 ];
 
 const subCategories = [
-  { name: "Properties For Sell", href: "?page=1&limit=5&purpose=for sell" },
-  { name: "Properties For Rent", href: "?page=1&limit=5&purpose=for rent" },
+  { name: "Properties For Sell", href: "?page=1&limit=5&purpose=for+sell" },
+  { name: "Properties For Rent", href: "?page=1&limit=5&purpose=for+rent" },
 ];
 let errors = "";
 const getFiltersData = async () => {
@@ -43,6 +44,7 @@ const getFiltersData = async () => {
   });
 
   if (!response.ok) errors = response.statusText;
+
   return response.json();
 };
 
@@ -56,10 +58,15 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const filterData: FilterResponse = await getFiltersData();
+
   if (!filterData.success) {
     errors = "network error, try again or refersh the page";
   }
 
+  const ReqHeaders = headers();
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(
+    (await ReqHeaders).get("user-agent") || ""
+  );
   return (
     <>
       {filterData.success ? (
@@ -71,9 +78,12 @@ export default async function RootLayout({
             />
             <main className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
               <div className="flex items-baseline md:justify-between justify-end border-b border-gray-200 md:pb-6 pb-3 pt-24">
-                <h1 className="font-bold lg:block hidden md:text-4xl text-2xl">
-                  Properties For Sell & Rent
-                </h1>
+                {!isMobile && (
+                  <h1 className="font-bold lg:block hidden md:text-4xl text-2xl">
+                    Properties For Sell & Rent
+                  </h1>
+                )}
+
                 <div className="flex items-center">
                   <Menu as="div" className="relative inline-block text-left">
                     <div className={"mr-20"}>

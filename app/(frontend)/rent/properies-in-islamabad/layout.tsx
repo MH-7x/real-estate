@@ -38,7 +38,7 @@ const FetchURL = async (url: string) => {
 
 const GetCityData = async () => {
   const data: Main = await FetchURL(
-    `${process.env.PUBLIC_URL}/api/get-city-data?city=islamabad&purpose=for+sell`
+    `${process.env.PUBLIC_URL}/api/get-city-data?city=islamabad&purpose=for+rent`
   );
   if (!data || data.success === false) {
     return {
@@ -61,9 +61,9 @@ async function RootLayout({
   return (
     <section>
       <PageHeroSection
-        type="Sale"
+        type="Rent"
         city="Islamabad"
-        desc="Explore a wide range of properties for sale in Islamabad, including houses, apartments, and plots in prime locations like DHA, Blue World City, and Park View City. Find your dream property today!"
+        desc="Explore a wide range of rental properties in Islamabad, including houses, apartments, and commercial spaces in prime locations like DHA, Blue World City, and Park View City. Find your ideal rental property today!"
         length={data.totalCount}
       />
       {data.success ? (

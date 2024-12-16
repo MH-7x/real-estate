@@ -14,7 +14,7 @@ function HeroSection() {
           </div>
         </div>
         <div className="text-center">
-          <h1 className="text-balance text-5xl md:leading-[68px] leading-[52px] font-bold tracking-tight text-gray-900 sm:text-7xl">
+          <h1 className="text-balance text-[40px]   md:leading-[68px] leading-[44px] font-bold tracking-tight text-gray-900 sm:text-7xl">
             Find Your Dream Property with{" "}
             <span className="text-primary">Brighthome</span>
           </h1>
@@ -23,7 +23,7 @@ function HeroSection() {
             neighborhoods, from family homes to luxury apartments tailored to
             your lifestyle.
           </p>
-          <div className="mt-5 w-full">
+          <div className="mt-5 flex justify-center items-center w-full">
             <SearchInput />
           </div>
         </div>

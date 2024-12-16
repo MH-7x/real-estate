@@ -60,6 +60,7 @@ async function RootLayout({
   return (
     <section>
       <PageHeroSection
+        type="Sale"
         city="Peshawar"
         desc="Discover top properties for sale in Peshawar, including houses, apartments, and plots in prime areas like Hayatabad, DHA Peshawar, and Regi Model Town. Your perfect property awaits!"
         length={data.totalCount}

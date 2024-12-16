@@ -43,22 +43,28 @@ const products = [
 ];
 const products2 = [
   {
-    name: "Properties in Peshawar",
+    name: "Properties for sale in Peshawar",
     description: "all properties in peshawar",
     href: "/sale/properies-in-peshawar",
     icon: Building2Icon,
   },
   {
-    name: "Properties in Islamabad",
+    name: "Properties for sale in Islamabad",
     description: "Descover better properties in Peshawar and surrounded areas",
     href: "/sale/properies-in-islamabad",
     icon: Building2Icon,
   },
   {
-    name: "View All Location",
-    description: "all properties location ",
-    href: "/properties",
-    icon: MoreHorizontal,
+    name: "Properties for rent in Peshawar",
+    description: "all properties in peshawar",
+    href: "/rent/properies-in-peshawar",
+    icon: Building2Icon,
+  },
+  {
+    name: "Properties for rent in Islamabad",
+    description: "Descover better properties in Peshawar and surrounded areas",
+    href: "/rent/properies-in-islamabad",
+    icon: Building2Icon,
   },
 ];
 import React from "react";
@@ -225,7 +231,7 @@ function Navbar() {
               <div className="space-y-2 py-6">
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Properties for sell
+                    Properties
                     <ChevronDownIcon
                       aria-hidden="true"
                       className="size-5 flex-none group-data-[open]:rotate-180"
@@ -246,7 +252,7 @@ function Navbar() {
                 </Disclosure>
                 <Disclosure as="div" className="-mx-3">
                   <DisclosureButton className="group flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">
-                    Properties for rent
+                    Location
                     <ChevronDownIcon
                       aria-hidden="true"
                       className="size-5 flex-none group-data-[open]:rotate-180"

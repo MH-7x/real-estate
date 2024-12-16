@@ -93,6 +93,7 @@ export async function POST() {
           uniqueValues: {
             $addToSet: {
               city: "$address.city",
+              area: "$address.area",
               condition: "$condition",
               size: "$size",
             },
@@ -106,6 +107,7 @@ export async function POST() {
         $group: {
           _id: null,
           cities: { $addToSet: "$uniqueValues.city" },
+          areas: { $addToSet: "$uniqueValues.area" },
           conditions: { $addToSet: "$uniqueValues.condition" },
           sizes: { $addToSet: "$uniqueValues.size" },
         },
@@ -114,6 +116,7 @@ export async function POST() {
         $project: {
           _id: 0,
           cities: 1,
+          areas: 1,
           conditions: 1,
           sizes: 1,
         },

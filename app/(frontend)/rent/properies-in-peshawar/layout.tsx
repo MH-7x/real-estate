@@ -1,9 +1,8 @@
-import PageHeroSection from "@/components/PageHeroSection";
-import React from "react";
-
 import dynamic from "next/dynamic";
 
 const CityFilterData = dynamic(() => import("@/components/CityFilterData"));
+import PageHeroSection from "@/components/PageHeroSection";
+import React from "react";
 
 export interface Main {
   message: string;
@@ -38,7 +37,7 @@ const FetchURL = async (url: string) => {
 
 const GetCityData = async () => {
   const data: Main = await FetchURL(
-    `${process.env.PUBLIC_URL}/api/get-city-data?city=islamabad&purpose=for+sell`
+    `${process.env.PUBLIC_URL}/api/get-city-data?city=peshawar&purpose=for+rent`
   );
   if (!data || data.success === false) {
     return {
@@ -61,9 +60,9 @@ async function RootLayout({
   return (
     <section>
       <PageHeroSection
-        type="Sale"
-        city="Islamabad"
-        desc="Explore a wide range of properties for sale in Islamabad, including houses, apartments, and plots in prime locations like DHA, Blue World City, and Park View City. Find your dream property today!"
+        type="Rent"
+        city="Peshawar"
+        desc="Discover top rental properties in Peshawar, including houses, apartments, and commercial spaces in prime areas like Hayatabad, DHA Peshawar, and Regi Model Town. Your ideal rental property awaits!"
         length={data.totalCount}
       />
       {data.success ? (

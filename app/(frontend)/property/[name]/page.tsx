@@ -9,8 +9,68 @@ import convertToPkrCurrency from "@/lib/ConvertToPkrCurrency";
 import { FormatConditions } from "@/lib/FormatConditions";
 import { Condition, SinResProperty } from "@/types/property";
 import { Bath, BedDoubleIcon, Building2, MoveDiagonal2 } from "lucide-react";
+import { Metadata } from "next";
 import { headers } from "next/headers";
 import Image from "next/image";
+import { GenerateJsonLD } from "../../../../lib/GenerateJsonLD";
+type Props = {
+  params: Promise<{ name: string }>;
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const name = (await params).name;
+  let property: SinResProperty | null = null;
+  property = await GetPropertyData(name);
+
+  const fallbackImage = property?.images?.[0] || ""; // Safeguard for empty image array
+  const price = property?.price ? convertToPkrCurrency(property.price) : "N/A"; // Default price if unavailable
+
+  return {
+    keywords: [
+      `${property?.PropertyName}`,
+      `${property?.size.value} ${property?.size.unit}`,
+      `${property?.propertyType}`,
+      `${property?.purpose}`,
+      `${property?.street}, ${property?.address.area}, ${property?.address.city}`,
+      `${property?.bedrooms} bedrooms`,
+      `${property?.bathrooms} bathrooms`,
+      `${property?.condition} condition`,
+      `PKR ${price}`,
+    ],
+    title: `${property?.PropertyName} | Brighthome`,
+    description: `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, ${property?.condition} condition, price PKR ${price}`,
+
+    openGraph: {
+      title:
+        `${property?.PropertyName} | Brighthome` || name.split("-").join(" "),
+      description:
+        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, $${property?.condition} condition, price PKR ${price}` ||
+        name.split("-").join(" "),
+
+      images: fallbackImage ? [fallbackImage] : [],
+
+      url: `${process.env.PUBLIC_URL}/property/${name}`,
+    },
+    alternates: {
+      canonical: `${process.env.PUBLIC_URL}/property/${name}`,
+      languages: {
+        "en-US": `${process.env.PUBLIC_URL}/property/${name}`,
+      },
+    },
+    twitter: {
+      title:
+        `${property?.PropertyName} | Brighthome` || name.split("-").join(" "),
+      description:
+        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, $${property?.condition} condition, price PKR ${price}` ||
+        name.split("-").join(" "),
+      images: fallbackImage ? [fallbackImage] : [],
+    },
+    other: {
+      "application/ld+json":
+        GenerateJsonLD({ property: property as SinResProperty | null }) || "",
+    },
+  };
+}
 
 const fetchWithErrorHandling = async (url: string) => {
   try {
@@ -21,7 +81,7 @@ const fetchWithErrorHandling = async (url: string) => {
       throw new Error(`Failed to fetch: ${res.statusText}`);
     }
     const data = await res.json();
-    console.log("DATA  :: ", data);
+
     return data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -62,6 +122,8 @@ async function SinglePropertyDetail({
 
   try {
     property = await GetPropertyData(name);
+    console.log("property", property);
+
     similarProperties = await getSimilarProperties(property?.address.city);
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (err: any) {

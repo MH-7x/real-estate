@@ -4,22 +4,22 @@ const features = [
   {
     name: "Extensive Property Listings",
     description:
-      "Discover a wide range of properties across Peshawar and Islamabad, including luxury villas, apartments, commercial spaces, and more.",
+      "From apartments close to me to land for sale, our inventory is vast and diverse.",
   },
   {
     name: "Expert Local Knowledge",
     description:
-      "Our team understands the local market dynamics in Hayatabad, DHA Peshawar, Regi Model Town, Park View City, and other prime areas, ensuring you get the best deals.",
+      "With insights into areas like Hayatabad, DHA Peshawar, Park View City, and Blue World City, we ensure you get the best value.",
   },
   {
     name: "Personalized Service",
     description:
-      "We offer a personalized experience, guiding you through every step of the property transaction process.",
+      "Our agents assist with every step, from finding apartments for rent near me to closing property sales.",
   },
   {
     name: "Trusted by Hundreds",
     description:
-      "Our clients trust us for our transparent dealings, expert advice, and commitment to excellence.",
+      "With over 10,000 satisfied clients and a 98% satisfaction rate, Brighthome stands out in the real estate market.",
   },
 ];
 
@@ -31,7 +31,8 @@ export default function WhyChooseUs() {
           Why Choose Brighthome for Your Real Estate Needs?
         </h2>
         <p className="mt-4 text-gray-500">
-          We don’t just find you a property; we help you build your future.
+          We redefine the real estate business with a focus on client
+          satisfaction:
         </p>
 
         <dl className="mt-16 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 sm:gap-y-16 lg:gap-x-8">

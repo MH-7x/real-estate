@@ -98,132 +98,134 @@ export const PropertyTable: React.FC<Props> = ({
     }
   };
   return (
-    <ScrollArea className="md:w-full w-[92vw] mx-auto">
-      <div className=" mx-auto md:px-4 py-8 shadow-lg">
-        {/* Search Bar */}
-        <Input
-          type="text"
-          placeholder="Search Properties..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full absolute top-2 left-2 py-6 md:max-w-sm"
-        />
+    <>
+      <ScrollArea className="md:w-full w-[92vw] mx-auto">
+        <div className=" mx-auto md:px-4 py-8 shadow-lg">
+          {/* Search Bar */}
+          <Input
+            type="text"
+            placeholder="Search Properties..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full absolute top-2 left-2 py-6 md:max-w-sm"
+          />
 
-        {/* Table */}
-        <div className="mt-16">
-          <Table>
-            <TableHeader className="bg-secondary">
-              <TableRow className="font-semibold text-lg text-center">
-                <TableCell className={""}>Images</TableCell>
-                <TableCell className={"min-w-44"}> Property Name</TableCell>
-                <TableCell className={"min-w-44"}>City </TableCell>
-                <TableCell>Type </TableCell>
-                <TableCell>Purpose </TableCell>
-                <TableCell>Price</TableCell>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {paginatedProperties.length > 0 ? (
-                paginatedProperties.map((property) => (
-                  <TableRow
-                    className="text-center relative font-medium"
-                    key={property._id}
-                  >
-                    <TableCell>
-                      <Swiper
-                        modules={[SwiperPagination]}
-                        pagination={{ clickable: true }}
-                        spaceBetween={10}
-                        slidesPerView={1}
-                        className="w-36 overflow-hidden rounded-md  h-36 md:w-32 md:h-32"
-                      >
-                        {property.images.map((image, index) => (
-                          <SwiperSlide key={index}>
-                            <CldImage
-                              src={image}
-                              width={150}
-                              height={150}
-                              quality={50}
-                              alt="image"
-                              className="overflow-hidden object-cover"
-                            />
-                          </SwiperSlide>
-                        ))}
-                      </Swiper>
-                    </TableCell>
-                    <TableCell>{property.PropertyName}</TableCell>
-                    <TableCell>
-                      {property.address.city} <br /> {property.street}{" "}
-                      {property.address.area}{" "}
-                    </TableCell>
-                    <TableCell>{property.propertyType}</TableCell>
-                    <TableCell>{property.purpose}</TableCell>
-                    <TableCell>${property.price.toLocaleString()}</TableCell>
-                    <div className="absolute bottom-1 flex gap-x-3 right-2">
-                      <div className="flex mr-4 items-center gap-2">
-                        <CalendarRange className="size-5 text-primary" />
-                        <span className="text-sm text-muted-foreground">
-                          {formatDate(property.createdAt)}
-                        </span>
-                      </div>
-                      <Button
-                        onClick={() => handleDelete(property._id)}
-                        variant={"destructive"}
-                        size={"icon"}
-                      >
-                        <Delete />
-                      </Button>
-                      <Link href={`/dashboard/edit/${property._id}`} prefetch>
-                        <Button variant={"outline"} size={"icon"}>
-                          <Edit />
-                        </Button>
-                      </Link>
-                    </div>
-                  </TableRow>
-                ))
-              ) : (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center">
-                    No properties found.
-                  </TableCell>
+          {/* Table */}
+          <div className="mt-16">
+            <Table>
+              <TableHeader className="bg-secondary">
+                <TableRow className="font-semibold text-lg text-center">
+                  <TableCell className={""}>Images</TableCell>
+                  <TableCell className={"min-w-44"}> Property Name</TableCell>
+                  <TableCell className={"min-w-44"}>City </TableCell>
+                  <TableCell>Type </TableCell>
+                  <TableCell>Purpose </TableCell>
+                  <TableCell>Price</TableCell>
                 </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {paginatedProperties.length > 0 ? (
+                  paginatedProperties.map((property) => (
+                    <TableRow
+                      className="text-center relative font-medium"
+                      key={property._id}
+                    >
+                      <TableCell>
+                        <Swiper
+                          modules={[SwiperPagination]}
+                          pagination={{ clickable: true }}
+                          spaceBetween={10}
+                          slidesPerView={1}
+                          className="w-36 overflow-hidden rounded-md  h-36 md:w-32 md:h-32"
+                        >
+                          {property.images.map((image, index) => (
+                            <SwiperSlide key={index}>
+                              <CldImage
+                                src={image}
+                                width={150}
+                                height={150}
+                                quality={50}
+                                alt="image"
+                                className="overflow-hidden object-cover"
+                              />
+                            </SwiperSlide>
+                          ))}
+                        </Swiper>
+                      </TableCell>
+                      <TableCell>{property.PropertyName}</TableCell>
+                      <TableCell>
+                        {property.address.city} <br /> {property.street}{" "}
+                        {property.address.area}{" "}
+                      </TableCell>
+                      <TableCell>{property.propertyType}</TableCell>
+                      <TableCell>{property.purpose}</TableCell>
+                      <TableCell>${property.price.toLocaleString()}</TableCell>
+                      <div className="absolute bottom-1 flex gap-x-3 right-2">
+                        <div className="flex mr-4 items-center gap-2">
+                          <CalendarRange className="size-5 text-primary" />
+                          <span className="text-sm text-muted-foreground">
+                            {formatDate(property.createdAt)}
+                          </span>
+                        </div>
+                        <Button
+                          onClick={() => handleDelete(property._id)}
+                          variant={"destructive"}
+                          size={"icon"}
+                        >
+                          <Delete />
+                        </Button>
+                        <Link href={`/dashboard/edit/${property._id}`} prefetch>
+                          <Button variant={"outline"} size={"icon"}>
+                            <Edit />
+                          </Button>
+                        </Link>
+                      </div>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center">
+                      No properties found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
 
-        {/* Pagination */}
-        <div className="mt-6 flex justify-center md:justify-end">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href="#"
-                  onClick={() => handlePageChange(currentPage - 1)}
-                />
-              </PaginationItem>
-              {Array.from({ length: totalPages }, (_, index) => (
-                <PaginationItem key={index}>
-                  <PaginationLink
-                    href="#"
-                    isActive={currentPage === index + 1}
-                    onClick={() => handlePageChange(index + 1)}
-                  >
-                    {index + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-              <PaginationItem>
-                <PaginationNext
-                  href="#"
-                  onClick={() => handlePageChange(currentPage + 1)}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+          {/* Pagination */}
         </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+      <div className="mt-6 flex justify-center md:justify-end">
+        <Pagination>
+          <PaginationContent>
+            <PaginationItem>
+              <PaginationPrevious
+                href="#"
+                onClick={() => handlePageChange(currentPage - 1)}
+              />
+            </PaginationItem>
+            {Array.from({ length: totalPages }, (_, index) => (
+              <PaginationItem key={index}>
+                <PaginationLink
+                  href="#"
+                  isActive={currentPage === index + 1}
+                  onClick={() => handlePageChange(index + 1)}
+                >
+                  {index + 1}
+                </PaginationLink>
+              </PaginationItem>
+            ))}
+            <PaginationItem>
+              <PaginationNext
+                href="#"
+                onClick={() => handlePageChange(currentPage + 1)}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
       </div>
-      <ScrollBar orientation="horizontal" />
-    </ScrollArea>
+    </>
   );
 };
