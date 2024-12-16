@@ -13,6 +13,7 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { GenerateJsonLD } from "../../../../lib/GenerateJsonLD";
+import Link from "next/link";
 type Props = {
   params: Promise<{ name: string }>;
 };
@@ -199,18 +200,20 @@ async function SinglePropertyDetail({
               <>
                 <Separator className="my-4" />
                 <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    size={"lg"}
-                    className="flex items-center md:gap-3 gap-1"
-                  >
-                    <Image
-                      src={"/images/whatsapp.svg"}
-                      alt="whatsapp"
-                      width={20}
-                      height={20}
-                    />
-                    <p className="text-primary-foreground">WhatsApp</p>
-                  </Button>
+                  <Link href={"https://wa.me/923000000000"}>
+                    <Button
+                      size={"lg"}
+                      className="flex items-center md:gap-3 gap-1"
+                    >
+                      <Image
+                        src={"/images/whatsapp.svg"}
+                        alt="whatsapp"
+                        width={20}
+                        height={20}
+                      />
+                      <p className="text-primary-foreground">WhatsApp</p>
+                    </Button>
+                  </Link>
                   <Button
                     variant={"outline"}
                     size={"lg"}

@@ -36,7 +36,7 @@ function PropertyImagesPreview({
   return (
     <>
       <Carousel
-        className="col-span-3 relative  rounded-2xl overflow-hidden md:h-[494px] h-80"
+        className="col-span-3 relative  rounded-2xl overflow-hidden md:h-[494px] h-96"
         setApi={setApi}
       >
         <CarouselContent>
@@ -62,7 +62,7 @@ function PropertyImagesPreview({
 
       {ResizeImages.length > 2 && (
         <div className="col-span-2 md:grid md:grid-rows-2 grid-rows-1  hidden gap-3">
-          <div className="row-span-1 overflow-hidden bg-red-300 h-60 rounded-2xl">
+          <div className="row-span-1 overflow-hidden bg-secondary h-60 rounded-2xl">
             <Image
               alt={alt}
               src={ResizeImages[1]}
@@ -72,7 +72,7 @@ function PropertyImagesPreview({
               className="object-cover rounded-2xl h-auto w-auto object-center"
             />
           </div>
-          <div className="row-span-1 overflow-hidden bg-red-300 h-60 rounded-2xl">
+          <div className="row-span-1 overflow-hidden bg-secondary h-60 rounded-2xl">
             <Image
               alt={alt}
               src={ResizeImages[2]}
