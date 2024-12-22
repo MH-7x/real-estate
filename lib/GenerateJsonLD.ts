@@ -7,13 +7,15 @@ export function GenerateJsonLD({
 }) {
   if (!property) return null;
 
+  // Map all amenities to an array of their names
+  const amenities = property.amenities.map((amenity) => amenity.name); // Include all amenities, regardless of isToggle
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "RealEstateListing",
     url: `${process.env.PUBLIC_URL}/property/${property.slug}`,
     name: property.PropertyName,
-    description: property.description, // Fixed key name (removed extra space)
-    image: property.images, // Fixed key name (removed extra space)
+    image: property.images,
     offers: {
       "@type": "Offer",
       priceCurrency: "PKR",
@@ -34,11 +36,8 @@ export function GenerateJsonLD({
     numberOfBathroomsTotal: property.bathrooms,
     condition: property.condition,
     video: property.FacebookVideoLink,
-    additionalProperty: {
-      "@type": "PropertyValue",
-      name: "Amenities",
-      value: property.amenities.length ? property.amenities.join(", ") : "None",
-    },
+    amenities: amenities.length ? amenities : undefined, // Include amenities if available
+
     isPartOf: {
       "@type": "Place",
       name: property.address.city,

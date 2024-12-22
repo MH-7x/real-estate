@@ -120,7 +120,10 @@ async function SearchPage({
           </div>
           <Separator className="my-8" />
 
-          <ContactForm />
+          <ContactForm
+            propertyImageUrl={result.data[0].images[0]}
+            propertyName="Search Properties Data"
+          />
           <Separator className="my-8" />
           <div className="grid grid-cols-1 gap-y-2 mt-8">
             <h3 className="font-semibold text-center my-2 text-muted-foreground">

@@ -38,10 +38,10 @@ export default function Layout({
           </Breadcrumb>
           <Image
             src={"/images/logo.png"}
-            width={150}
-            height={150}
+            width={50}
+            height={50}
             alt="brighthome logo"
-            className="absolute top-4 md:block hidden right-4"
+            className="absolute top-4 object-contain md:block hidden right-4"
           />
         </header>
         <div className="bg-red- md:p-5 lg:p-10 p-3">{children}</div>

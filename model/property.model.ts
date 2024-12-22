@@ -1,3 +1,4 @@
+import { Amenities } from "@/types/Amenities";
 import {
   Commercial,
   Condition,
@@ -26,7 +27,7 @@ export interface Property extends Document {
   slug: string;
   condition: Condition;
   price: number;
-  amenities?: Array<{ name: string; value: string }>;
+  amenities?: Array<Amenities>;
   description?: string;
   images: string[];
   FacebookVideoLink?: string;
@@ -60,7 +61,15 @@ const propertySchema = new Schema<Property>({
   slug: { type: String, required: true },
   condition: { type: String, required: true }, //
   price: { type: Number, required: [true, "Price is required"], default: 0 },
-  amenities: [{ name: String, value: String }], //
+  amenities: [
+    {
+      id: { type: String },
+      name: { type: String },
+      count: { type: Number },
+      isToggle: { type: Boolean },
+      icon: { type: String },
+    },
+  ], //
   description: { type: String }, //
   images: [{ type: String }], //
   FacebookVideoLink: { type: String, default: "" },

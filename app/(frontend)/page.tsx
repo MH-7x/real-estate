@@ -2,6 +2,7 @@ import Cities from "@/components/Cities";
 import FAQs from "@/components/FAQs";
 import HeroSection from "@/components/heroSection";
 import Last from "@/components/Last";
+import LogosScroll from "@/components/LogosScroll";
 import PopularProperties from "@/components/PopularProperties";
 import RecAdd from "@/components/RecAdd";
 import OurTeam from "@/components/Team";
@@ -76,6 +77,7 @@ async function page() {
   return (
     <section>
       <HeroSection />
+      <LogosScroll />
       {!recentlyAddedProperties?.success ? (
         <div className="min-h-96 bg-secondary flex items-center flex-col justify-center w-11/12 mx-auto rounded-xl text-destructive">
           <Image src={"/error.svg"} width={150} height={150} alt="error" />

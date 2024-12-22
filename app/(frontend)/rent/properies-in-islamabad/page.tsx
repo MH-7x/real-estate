@@ -162,7 +162,10 @@ async function page({
           </div>
           <Separator className="my-8" />
 
-          <ContactForm />
+          <ContactForm
+            propertyImageUrl={response.data[0]?.images[0]}
+            propertyName="Propertiest For Rents In Islamabad"
+          />
           <Separator className="my-8" />
           <div className="grid grid-cols-1 gap-y-2 mt-8">
             <h3 className="font-semibold text-center my-2 text-muted-foreground">

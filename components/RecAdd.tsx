@@ -21,11 +21,11 @@ function RecAdd({ properties }: { properties: ResProperty[] }) {
 
       <div className="mt-5">
         <Carousel draggable={false} className="w-full">
-          <CarouselContent className="md:-ml-1">
+          <CarouselContent className="md:-ml-1 cursor-grab">
             {properties.map((property, index) => (
               <CarouselItem key={index} className=" md:basis-1/2 lg:basis-1/3">
                 <div>
-                  <CardContent className="flex aspect-square items-center justify-center md:p-6 p-2">
+                  <CardContent className="flex aspect-square items-center justify-center md:p-6 p-0">
                     <PropertyCard property={property} />
                   </CardContent>
                 </div>

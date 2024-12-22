@@ -20,7 +20,7 @@ async function AddPropertyPage() {
       <div className="z-10 isolate relative">
         <h2 className="text-center">Add New Property</h2>
 
-        <div className="mt-10 bg-white drop-shadow-2xl md:w-11/12 w-full mx-auto rounded-2xl p-3">
+        <div className="mt-10 bg-white md:drop-shadow-2xl md:w-11/12 w-full mx-auto rounded-2xl md:p-3">
           <PropertyForm />
         </div>
       </div>

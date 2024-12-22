@@ -7,13 +7,17 @@ import { Separator } from "@/components/ui/separator";
 import VideoLoadTrigger from "@/components/VideoLoadTrigger";
 import convertToPkrCurrency from "@/lib/ConvertToPkrCurrency";
 import { FormatConditions } from "@/lib/FormatConditions";
-import { Condition, SinResProperty } from "@/types/property";
+import { Condition, Rating, SinResProperty } from "@/types/property";
 import { Bath, BedDoubleIcon, Building2, MoveDiagonal2 } from "lucide-react";
 import { Metadata } from "next";
 import { headers } from "next/headers";
 import Image from "next/image";
 import { GenerateJsonLD } from "../../../../lib/GenerateJsonLD";
 import Link from "next/link";
+import PropertyRating from "@/components/RatingComponent";
+import RatingCard from "@/components/RatingCard";
+import PreviewAmenities from "@/components/PreviewAmenities";
+import { generateWhatsAppLink } from "@/lib/GenerateWhatsappLink";
 type Props = {
   params: Promise<{ name: string }>;
 };
@@ -45,7 +49,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title:
         `${property?.PropertyName} | Brighthome` || name.split("-").join(" "),
       description:
-        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, $${property?.condition} condition, price PKR ${price}` ||
+        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, ${property?.condition} condition, price PKR ${price}` ||
         name.split("-").join(" "),
 
       images: fallbackImage ? [fallbackImage] : [],
@@ -62,7 +66,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title:
         `${property?.PropertyName} | Brighthome` || name.split("-").join(" "),
       description:
-        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, $${property?.condition} condition, price PKR ${price}` ||
+        `${property?.size.value} ${property?.size.unit} ${property?.propertyType} ${property?.purpose} in ${property?.street}, ${property?.address.area}, ${property?.address.city} with ${property?.bedrooms} bedrooms, ${property?.bathrooms} bathrooms, ${property?.condition} condition, price PKR ${price}` ||
         name.split("-").join(" "),
       images: fallbackImage ? [fallbackImage] : [],
     },
@@ -111,6 +115,17 @@ const getSimilarProperties = async (city: string | undefined) => {
   return data.data;
 };
 
+const getPropertyRating = async (id: string | undefined) => {
+  if (!id) return [];
+  const data = await fetchWithErrorHandling(
+    `${process.env.PUBLIC_URL}/api/rating?id=${id}`
+  );
+  if (data.success === false) {
+    throw new Error(data.message);
+  }
+  return data.data;
+};
+
 async function SinglePropertyDetail({
   params,
 }: {
@@ -119,16 +134,15 @@ async function SinglePropertyDetail({
   const name = (await params).name;
   let property: SinResProperty | null = null;
   let similarProperties: SinResProperty[] = [];
+  let ratingData: Rating[] = [];
   let errors = "";
 
   try {
     property = await GetPropertyData(name);
-    console.log("property", property);
-
     similarProperties = await getSimilarProperties(property?.address.city);
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (err: any) {
-    errors = err.message;
+    ratingData = await getPropertyRating(property?._id);
+  } catch (err) {
+    errors = err instanceof Error ? err.message : "something went wrong";
   }
 
   const ReqHeaders = headers();
@@ -199,8 +213,11 @@ async function SinglePropertyDetail({
             {isMobile && (
               <>
                 <Separator className="my-4" />
-                <div className="grid grid-cols-2 gap-4">
-                  <Link href={"https://wa.me/923000000000"}>
+                <div className="grid grid-cols-2 w-full gap-4">
+                  <Link
+                    className="col-span-1"
+                    href={generateWhatsAppLink(property.slug)}
+                  >
                     <Button
                       size={"lg"}
                       className="flex items-center md:gap-3 gap-1"
@@ -214,19 +231,24 @@ async function SinglePropertyDetail({
                       <p className="text-primary-foreground">WhatsApp</p>
                     </Button>
                   </Link>
-                  <Button
-                    variant={"outline"}
-                    size={"lg"}
-                    className="flex items-center md:gap-3 gap-1"
+                  <Link
+                    className="col-span-1"
+                    href={`tel:${process.env.WHATSAPP_NUMBER}`}
                   >
-                    <Image
-                      src={"/images/phone-call.svg"}
-                      alt="phone call"
-                      width={25}
-                      height={25}
-                    />
-                    <p>Call</p>
-                  </Button>
+                    <Button
+                      variant={"outline"}
+                      size={"lg"}
+                      className="flex items-center md:gap-3 gap-1"
+                    >
+                      <Image
+                        src={"/images/phone-call.svg"}
+                        alt="phone call"
+                        width={25}
+                        height={25}
+                      />
+                      <p>Call</p>
+                    </Button>
+                  </Link>
                 </div>
               </>
             )}
@@ -247,45 +269,55 @@ async function SinglePropertyDetail({
                 <VideoLoadTrigger url={property.FacebookVideoLink} />
               </div>
             )}
+
             <h3 className="mt-10">Complete Property Details</h3>
 
             <DetailPropertyTable property={property} />
+            <h3 className="mt-10">Features and Amenities</h3>
+            <PreviewAmenities amenities={property.amenities} />
           </div>
           <div className="md:col-span-2 col-span-3 border border-primary/10 mt-3 rounded-lg px-3 py-8">
             {!isMobile && (
               <>
                 <div className="grid grid-cols-2 gap-4">
-                  <Button
-                    size={"lg"}
-                    className="flex items-center md:gap-3 gap-1"
-                  >
-                    <Image
-                      src={"/images/whatsapp.svg"}
-                      alt="whatsapp"
-                      width={20}
-                      height={20}
-                    />
-                    <p className="text-primary-foreground">WhatsApp</p>
-                  </Button>
-                  <Button
-                    variant={"outline"}
-                    size={"lg"}
-                    className="flex items-center md:gap-3 gap-1"
-                  >
-                    <Image
-                      src={"/images/phone-call.svg"}
-                      alt="phone call"
-                      width={25}
-                      height={25}
-                    />
-                    <p>Call</p>
-                  </Button>
+                  <Link href={generateWhatsAppLink(property.slug)}>
+                    <Button
+                      size={"lg"}
+                      className="flex items-center md:gap-3 gap-1"
+                    >
+                      <Image
+                        src={"/images/whatsapp.svg"}
+                        alt="whatsapp"
+                        width={20}
+                        height={20}
+                      />
+                      <p className="text-primary-foreground">WhatsApp</p>
+                    </Button>
+                  </Link>
+                  <Link href={`tel:${process.env.WHATSAPP_NUMBER}`}>
+                    <Button
+                      variant={"outline"}
+                      size={"lg"}
+                      className="flex items-center md:gap-3 gap-1"
+                    >
+                      <Image
+                        src={"/images/phone-call.svg"}
+                        alt="phone call"
+                        width={25}
+                        height={25}
+                      />
+                      <p>Call</p>
+                    </Button>
+                  </Link>
                 </div>
                 <Separator className="my-8" />
               </>
             )}
 
-            <ContactForm />
+            <ContactForm
+              propertyImageUrl={property.images[0]}
+              propertyName={property.PropertyName}
+            />
             <Separator className="my-8" />
             <div className="grid grid-cols-1 gap-y-2 mt-8">
               <h3 className="font-semibold text-center my-2 text-muted-foreground">
@@ -320,6 +352,36 @@ async function SinglePropertyDetail({
             </div>
           </div>
         </div>
+      </section>
+
+      <section className={"my-20  md:w-11/12 w-full mx-auto"}>
+        <PropertyRating property={property._id} />
+      </section>
+      <section
+        className={
+          "my-20  md:w-11/12 w-full grid md:grid-cols-3 grid-cols-1 md:px-0 px-3 gap-5 mx-auto"
+        }
+      >
+        {ratingData && ratingData.length > 0 ? (
+          ratingData.map((rating, i) => (
+            <RatingCard rating={rating} key={rating.property + i} />
+          ))
+        ) : (
+          <div className="col-span-3  flex items-center justify-center">
+            <div className="md:w-[500px] w-80 bg-secondary/50 rounded-lg p-4 flex flex-col items-center justify-center">
+              <Image
+                src={"/review.svg"}
+                alt="no review found"
+                width={200}
+                height={200}
+              />
+              <h3>No Review Yet</h3>
+              <p className="text-base text-accent-foreground">
+                Be the first to review this property
+              </p>
+            </div>
+          </div>
+        )}
       </section>
 
       <SimilarProperties

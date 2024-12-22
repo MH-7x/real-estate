@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -15,7 +16,7 @@ import UploadWidget, { CloudinaryWidgetResult } from "./UploadComponent";
 import { Switch } from "./ui/switch";
 import { useRouter } from "next/navigation";
 import ImagesPreview from "./ImagesPreview";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Input } from "./ui/input";
 
 import {
@@ -61,6 +62,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { AmenitiesComponent } from "./AmentiesComponent";
+import { Amenities } from "@/types/Amenities";
+import Image from "next/image";
 
 export default function ProperyForm({
   property,
@@ -69,6 +73,16 @@ export default function ProperyForm({
 }) {
   const router = useRouter();
 
+  const [Amenities, setAmenities] = useState<Amenities[]>([]);
+
+  useEffect(() => {
+    console.log("Property updated:", property);
+    if (property?.amenities) {
+      setAmenities(property.amenities);
+    }
+  }, [property]);
+
+  const [openInput, setOpenInput] = useState(false);
   const [selectedCity, setSelectedCity] = useState<string | null>(
     property?.address.city || null
   );
@@ -114,7 +128,7 @@ export default function ProperyForm({
       FacebookVideoLink:
         (property?.FacebookVideoLink && String(property.FacebookVideoLink)) ||
         "",
-      amenities: property?.amenities || [],
+      amenities: [],
       description: property?.description || "",
       isFeatured: property?.isFeatured || false,
       discount: (property?.discount && property.discount.toString()) || "0",
@@ -124,70 +138,61 @@ export default function ProperyForm({
 
   const { isDirty } = form.formState;
 
-  async function onSubmit(data: z.infer<typeof PropertySchema>) {
-    if (images.length <= 0) {
-      toast.error("Please upload at least one image");
-    } else {
-      const finalData = {
-        ...data,
-        images,
-      };
+  const onSubmit = useCallback(
+    async (data: z.infer<typeof PropertySchema>) => {
+      if (images.length === 0) {
+        toast.error("Please upload at least one image");
+        return;
+      }
+      data.amenities = Amenities;
+      const finalData = { ...data, images };
+      console.log("finalData", finalData);
 
-      console.log("Final Data To be Submit ::", finalData);
       try {
         const response = await fetch("/api/properties", {
           method: property ? "PUT" : "POST",
           headers: {
             "Content-Type": "application/json",
           },
-          body: property
-            ? JSON.stringify({ ...finalData, id: property._id })
-            : JSON.stringify(finalData),
+          body: JSON.stringify(
+            property ? { ...finalData, id: property._id } : finalData
+          ),
         });
 
-        if (!response.ok) throw new Error("Network response was not ok");
+        if (!response.ok) throw new Error("Failed to save property");
 
         const responseData = await response.json();
 
         if (!responseData.success) {
           toast.error(responseData.message);
         } else {
-          toast.success(responseData.message, {
-            className: "bg-green-300",
-          });
+          toast.success(responseData.message);
           form.reset();
           setImages([]);
           router.push("/dashboard/list-all");
         }
       } catch (error) {
-        if (error instanceof Error) {
-          toast.error(error.message);
-        }
+        if (error instanceof Error) toast.error(error.message);
       }
-    }
-  }
+    },
+    [images, property, form, router, Amenities]
+  );
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleUpload = (error: any, result: CloudinaryWidgetResult) => {
-    if (error) {
-      console.error("Upload Error:", error);
-      toast.error("Image upload failed");
-      return;
-    }
+  const handleUpload = useCallback(
+    (error: any, result: CloudinaryWidgetResult) => {
+      if (error) {
+        console.error("Upload Error:", error);
+        toast.error("Image upload failed");
+        return;
+      }
 
-    if (result?.event === "success") {
-      const url = result.info.secure_url;
-      setImages((prev) => [...prev, url]); // Update the images state
-      toast.success("Image uploaded successfully");
-    }
-  };
+      if (result?.event === "success") {
+        setImages((prev) => [...prev, result.info.secure_url]);
+      }
+    },
+    []
+  );
 
-  // Log the updated images
-  useEffect(() => {
-    console.log("Updated images:", images);
-  }, [images]);
-
-  // Handle browser/tab close
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       if (isDirty) {
@@ -207,7 +212,7 @@ export default function ProperyForm({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="space-y-6 flex items-start justify-center flex-col w-full "
+          className="space-y-16 md:space-y-10 flex items-start justify-center flex-col w-full "
         >
           <FormField
             control={form.control}
@@ -344,7 +349,7 @@ export default function ProperyForm({
                 <FormLabel className="text-lg block text-center">
                   Which city is your property in?
                 </FormLabel>
-                <Popover>
+                <Popover open={openInput} onOpenChange={setOpenInput}>
                   <PopoverTrigger asChild>
                     <FormControl>
                       <Button
@@ -380,6 +385,7 @@ export default function ProperyForm({
                               onSelect={() => {
                                 form.setValue("address.city", city.value);
                                 setSelectedCity(city.value);
+                                setOpenInput(false);
                                 setDistricts([]);
                               }}
                             >
@@ -411,55 +417,24 @@ export default function ProperyForm({
                 <FormLabel className="text-lg block text-center">
                   Which area/district property in?
                 </FormLabel>
-                <Popover>
-                  <PopoverTrigger className="" asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "md:w-[500px] w-full justify-between relative",
-                          !field.value && "text-muted-foreground"
-                        )}
-                      >
-                        {field.value
-                          ? districts.find(
-                              (district) => district.value === field.value
-                            )?.label
-                          : "Select area..."}
-                        <ChevronsUpDown className="opacity-50 absolute top-3 right-4" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="p-0 md:w-[500px] w-80">
-                    <Command className="">
-                      <CommandList>
-                        <CommandEmpty>No area found.</CommandEmpty>
-                        <CommandGroup>
-                          {districts.map((district) => (
-                            <CommandItem
-                              key={district.value}
-                              value={district.label}
-                              onSelect={() => {
-                                form.setValue("address.area", district.value);
-                              }}
-                            >
-                              {district.label}
-                              <Check
-                                className={cn(
-                                  "",
-                                  district.value === field.value
-                                    ? "opacity-100"
-                                    : "opacity-0"
-                                )}
-                              />
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </CommandList>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
+                <Select onValueChange={field.onChange} {...field}>
+                  <SelectTrigger className="">
+                    <SelectValue placeholder=" select area" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {districts.map((district, i) => (
+                        <SelectItem
+                          value={district.value}
+                          key={district.value + i}
+                        >
+                          {district.label}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+
                 <FormMessage />
               </FormItem>
             )}
@@ -526,27 +501,68 @@ export default function ProperyForm({
             />
           </div>
 
-          {images.length > 0 && (
-            <div className="w-full md:w-[500px] mx-auto transition-all bg-secondary min-h-32 rounded-lg p-5 flex items-start justify-start flex-wrap gap-5">
-              <ImagesPreview images={images} />
-            </div>
-          )}
-
-          <UploadWidget onUpload={handleUpload}>
-            {({ open }) => (
-              <Button
-                type="button"
-                className="w-full mx-auto md:w-96"
-                size={"lg"}
-                onClick={() => {
-                  open();
-                }}
-              >
-                Upload Image <Upload />
-              </Button>
+          <div className=" flex flex-col gap-y-5 items-center w-full justify-center">
+            {images.length > 0 && (
+              <div className="w-full md:w-[500px] mx-auto transition-all bg-secondary rounded-lg p-5 flex items-start justify-start flex-wrap gap-5">
+                <ImagesPreview images={images} />
+              </div>
             )}
-          </UploadWidget>
 
+            <UploadWidget onUpload={handleUpload}>
+              {({ open }) => (
+                <Button
+                  type="button"
+                  className="w-full mx-auto md:w-96"
+                  size={"lg"}
+                  onClick={() => {
+                    open();
+                  }}
+                >
+                  Upload Image <Upload />
+                </Button>
+              )}
+            </UploadWidget>
+          </div>
+
+          <div className="space-y-3 mx-auto md:w-[500px] w-full mt-10">
+            <p className="md:text-xl block text-center font-semibold">
+              What amenities are available?
+            </p>
+            <p className="text-sm text-center text-muted-foreground">
+              Add additional features e.g balcony, utilities, security details
+              etc. (Optional)
+            </p>
+            <div className="w-full md:w-[500px] flex items-center justify-center flex-col  mx-auto bg-secondary rounded-lg p-5">
+              <p>{Amenities.length}</p>
+              <p>{property?.amenities.length}</p>
+
+              {Amenities.length > 0 && (
+                <div className="w-full  mb-4 grid md:grid-cols-3 grid-cols-2 gap-4">
+                  {Amenities.map((amenity) => (
+                    <div
+                      key={amenity.id}
+                      className="bg-white shadow shadow-black/5 flex items-center justify-center rounded-2xl px-2 py-3 flex-col gap-y-1"
+                    >
+                      <Image
+                        src={amenity.icon}
+                        alt={amenity.name}
+                        width={18}
+                        height={18}
+                      />
+                      <p className="text-sm text-center font-semibold">
+                        {!amenity.isToggle && amenity.count} {amenity.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              <AmenitiesComponent
+                initialFeatures={property?.amenities || []} // Pass initial features
+                onFeaturesUpdate={(features) => setAmenities(features)}
+              />
+            </div>
+          </div>
           <FormField
             control={form.control}
             name="condition"
@@ -585,7 +601,7 @@ export default function ProperyForm({
                 <FormControl>
                   <Input
                     type="number"
-                    placeholder="size of property"
+                    placeholder="write asking price"
                     {...field}
                   />
                 </FormControl>
@@ -691,12 +707,12 @@ export default function ProperyForm({
             render={({ field }) => (
               <FormItem className="space-y-3 md:w-[500px] mx-auto w-full relative">
                 <FormLabel className="text-lg text-center block">
-                  Facebook Video Link
+                  TikTok Video Link
                 </FormLabel>
                 <FormControl className="">
                   <Input
                     type="text"
-                    placeholder="past facebook video link"
+                    placeholder="past tiktok video link"
                     {...field}
                     value={field.value ?? ""}
                   />

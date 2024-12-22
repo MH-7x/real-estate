@@ -1,3 +1,5 @@
+import { Amenities } from "./Amenities";
+
 // Property Types
 export type Purpose = "for sell" | "for rent";
 
@@ -327,8 +329,8 @@ export interface ResProperty {
   images: string[];
   isFeatured: boolean;
   discount: number;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  amenities: any[];
+
+  amenities: Amenities[];
   createdAt: Date;
   updatedAt: Date;
   __v: number;
@@ -358,8 +360,8 @@ export interface SinResProperty {
   price: number;
   FacebookVideoLink: string;
   slug: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  amenities: any[];
+
+  amenities: Amenities[];
   description: string;
   images: string[];
   isFeatured: boolean;
@@ -384,4 +386,13 @@ export interface Result {
 export interface Size {
   value: number;
   unit: string;
+}
+
+export interface Rating {
+  _id: string;
+  rating: number;
+  review: string;
+  UserName: string;
+  property: string;
+  createdAt: Date;
 }

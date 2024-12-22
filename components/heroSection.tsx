@@ -1,9 +1,25 @@
 import React from "react";
 import SearchInput from "./SearchInput";
-function HeroSection() {
+import { headers } from "next/headers";
+
+async function HeroSection() {
+  const ReqHeaders = headers();
+  const isMobile = /Mobi|Android|iPhone|iPad|iPod|BlackBerry|Opera Mini/i.test(
+    (await ReqHeaders).get("user-agent") || ""
+  );
   return (
-    <div className="relative isolate md:px-6 px-3 lg:px-8">
-      <div className="mx-auto max-w-4xl py-32 lg:py-32">
+    <div className="relative md:mt-0 mt-10 isolate md:px-6 px-3 lg:px-8">
+      <div
+        className="absolute opacity-30 -z-10 inset-0"
+        style={{
+          backgroundImage: `url('/images/Brighthome.jpg')`,
+          backgroundSize: isMobile ? "cover" : "contain",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      ></div>
+
+      <div className="mx-auto  z-10 max-w-4xl py-32 lg:py-32">
         <div className="hidden sm:mb-8 sm:flex sm:justify-center">
           <div className="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
             find out hot offers today{" "}

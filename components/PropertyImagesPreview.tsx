@@ -36,22 +36,20 @@ function PropertyImagesPreview({
   return (
     <>
       <Carousel
-        className="col-span-3 relative  rounded-2xl overflow-hidden md:h-[494px] h-96"
+        className="col-span-3 relative rounded-2xl overflow-hidden md:h-[494px] h-80"
         setApi={setApi}
       >
         <CarouselContent>
           {ResizeImages.map((image, i) => (
             <CarouselItem key={i}>
-              <div className="w-full h-full">
-                <Image
-                  src={image}
-                  alt={alt + i}
-                  width={700}
-                  height={700}
-                  loading="eager"
-                  className="object-cover rounded-2xl h-auto w-auto object-center"
-                />
-              </div>
+              <Image
+                src={image}
+                alt={alt + i}
+                width={700}
+                height={700}
+                loading="eager"
+                className="object-cover rounded-2xl h-auto w-auto object-center"
+              />
             </CarouselItem>
           ))}
         </CarouselContent>

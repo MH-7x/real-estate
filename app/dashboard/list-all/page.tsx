@@ -20,7 +20,6 @@ function ListAll() {
         toast.error(data.message);
       }
       setProperties(data.properties);
-      console.log("Data :: ", data);
     } catch (error) {
       if (error instanceof Error) {
         toast.error(error.message);

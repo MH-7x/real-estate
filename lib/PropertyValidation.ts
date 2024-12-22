@@ -38,8 +38,17 @@ export const PropertySchema = z.object({
     })
     .default(" "),
   amenities: z
-    .array(z.object({ name: z.string(), value: z.string() }))
-    .optional(),
+    .array(
+      z.object({
+        id: z.string(),
+        name: z.string(),
+        count: z.number(),
+        isToggle: z.boolean(),
+        icon: z.string(),
+      })
+    )
+    .optional()
+    .default([]),
   description: z.string().optional(),
 
   isFeatured: z.boolean().optional().default(false),
