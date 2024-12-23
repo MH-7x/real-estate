@@ -109,7 +109,6 @@ export async function GET(req: NextRequest) {
   const slug = searchParams.get("slug") || null;
   try {
     await dbConnect();
-
     if (limit !== null) {
       const properties = await Property.find({})
         .sort({ createdAt: -1 })
@@ -180,6 +179,7 @@ export async function GET(req: NextRequest) {
         property,
       });
     }
+
     const properties = await Property.find({}).sort({ createdAt: -1 });
     if (properties.length === 0) {
       return NextResponse.json({
@@ -194,6 +194,8 @@ export async function GET(req: NextRequest) {
       properties,
     });
   } catch (error) {
+    console.log("Properties Route ERROR :: ", error);
+
     if (error instanceof Error) {
       return NextResponse.json({
         message: "Network Error, try again later or refersh the page",

@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { ratingValidation } from "@/lib/ratingValidation";
 import ratingModel from "@/model/rating.model";
+
 import { z } from "zod";
+import dbConnect from "@/lib/Connection";
 export async function POST(req: NextRequest) {
   const { rating, review, UserName, property } = await req.json();
 
@@ -18,7 +20,7 @@ export async function POST(req: NextRequest) {
       review,
       UserName,
     });
-
+    await dbConnect();
     const newRating = new ratingModel({
       ...validateData,
       property,
@@ -29,6 +31,8 @@ export async function POST(req: NextRequest) {
       success: true,
     });
   } catch (error) {
+    console.log("Rating Route ERROR :: ", error);
+
     if (error instanceof z.ZodError) {
       return NextResponse.json({
         message: error.errors[0].message,

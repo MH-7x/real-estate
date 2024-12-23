@@ -53,6 +53,8 @@ export default function LoginForm() {
         toast.success(data.message);
         router.push("/dashboard"); // Changed to push
       } else {
+        console.log("Data :: ", data);
+
         toast.error(data.message);
       }
     } catch (error) {

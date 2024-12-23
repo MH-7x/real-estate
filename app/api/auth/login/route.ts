@@ -8,6 +8,9 @@ import { generateToken } from "@/lib/jwt";
 export async function POST(req: Request) {
   try {
     const { email, password } = await req.json();
+    console.log("email", email);
+    console.log("password", password);
+
     await dbConnect();
 
     const admin = await Admin.findOne({ email });
