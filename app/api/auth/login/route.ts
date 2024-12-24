@@ -13,7 +13,7 @@ export async function POST(req: Request) {
 
     await dbConnect();
 
-    const admin = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email: email });
     if (!admin) {
       return NextResponse.json({
         success: false,

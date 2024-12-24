@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 const team = [
   {
     name: "Harsh Patel",
@@ -21,6 +23,7 @@ const team = [
   },
 ];
 
+import teamImg from "../public/images/team.jpeg";
 export default function OurTeam() {
   return (
     <>
@@ -99,11 +102,14 @@ export default function OurTeam() {
                 key={person.name}
                 className="group  md:w-max w-full flex-wrap p-5  flex items-center gap-8  transition-all duration-500   lg:flex-nowrap"
               >
-                <div className=" w-full lg:w-48 h-64">
-                  <img
-                    src="https://plus.unsplash.com/premium_photo-1678197937465-bdbc4ed95815?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cGVyc29ufGVufDB8fDB8fHww"
-                    alt="image"
-                    className="rounded-2xl h-full object-cover mx-auto lg:mx-0 lg:w-full"
+                <div className=" relative w-full lg:w-48 h-64">
+                  <Image
+                    src={teamImg}
+                    placeholder="blur"
+                    loading="lazy"
+                    alt={person.name}
+                    fill
+                    className="rounded-2xl h-full object-cover mx-auto lg:mx-0  w-full"
                   />
                 </div>
                 <div className="text-center lg:text-left lg:max-w-xs flex-1">

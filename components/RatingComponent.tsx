@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React, { useState } from "react";
 import { Star } from "lucide-react";
@@ -8,8 +7,9 @@ import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 
 import { useRouter } from "next/navigation";
+import { Button } from "./ui/button";
 
-const PropertyRating = ({ property }: { property: string }) => {
+const PropertyRating = ({ property }: { property: string | undefined }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState(0);
   const [review, setreview] = useState("");
@@ -25,7 +25,7 @@ const PropertyRating = ({ property }: { property: string }) => {
     }
 
     const data = {
-      property,
+      property: property && property,
       rating,
       review,
       UserName,
@@ -123,12 +123,7 @@ const PropertyRating = ({ property }: { property: string }) => {
             ></Textarea>
           </div>
           <div className="flex items-center justify-between">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
-              type="submit"
-            >
-              Submit Rating
-            </button>
+            <Button type="submit">Submit Rating</Button>
           </div>
         </form>
       </div>

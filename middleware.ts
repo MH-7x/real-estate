@@ -1,25 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
+
 export const config = {
-   matcher: [
-      "/dashboard/:path*",
-      "/login",
-   ],
+  matcher: ["/dashboard/:path*", "/login"],
 };
 
 export async function middleware(request: NextRequest) {
-   const token = request.cookies.get("token");
-   const url = request.nextUrl;
-   // Redirect to dashboard if the user is already authenticated
-   // and trying to access sign-in, sign-up, or home page
-   if (
-      token &&
-      (url.pathname.startsWith("/login"))){
-      return NextResponse.redirect(new URL("/dashboard", request.url));
-   }
+  const token = request.cookies.get("token");
+  const { pathname } = request.nextUrl;
 
-   if (!token && url.pathname.startsWith("/dashboard")) {
-      return NextResponse.redirect(new URL("/login", request.url));
-   }
+  if (token && pathname === "/login") {
+    return NextResponse.redirect(new URL("/dashboard", request.url));
+  }
 
-   return NextResponse.next();
+  if (!token && pathname.startsWith("/dashboard")) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
+
+  return NextResponse.next();
 }

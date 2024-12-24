@@ -18,10 +18,7 @@ const SimilarProperties = ({
   city: string;
 }) => {
   return (
-    <section
-      id="recently-added "
-      className="md:w-11/12 mt-16 w-full mx-auto relative isolate"
-    >
+    <>
       <h2 className="text-center">Similar Properties in {city}</h2>
       <p className="text-center">
         More similar properties in {city} and its area
@@ -44,7 +41,7 @@ const SimilarProperties = ({
           <CarouselNext className="right-2 -translate-x-1 top-0" />
         </Carousel>
       </div>
-    </section>
+    </>
   );
 };
 

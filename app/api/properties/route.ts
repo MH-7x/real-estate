@@ -103,107 +103,74 @@ export async function PUT(req: NextRequest) {
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
 
-  const limit = searchParams.get("limit") || null;
-  const id = searchParams.get("id") || null;
-  const onlyFeatured = searchParams.get("onlyFeatured") || null;
-  const slug = searchParams.get("slug") || null;
+  const limit = searchParams.get("limit");
+  const id = searchParams.get("id");
+  const onlyFeatured = searchParams.get("onlyFeatured");
+  const slug = searchParams.get("slug");
+
   try {
     await dbConnect();
-    if (limit !== null) {
+
+    if (limit) {
       const properties = await Property.find({})
         .sort({ createdAt: -1 })
-        .limit(parseInt(limit));
-      if (properties.length === 0) {
-        return NextResponse.json({
-          message: "Cannot Found Properties in Database!",
-          success: false,
-        });
-      }
+        .limit(parseInt(limit, 10));
       return NextResponse.json({
-        message: "Fetched Successfully limit",
-        success: true,
+        message: properties.length
+          ? "Fetched properties successfully"
+          : "No properties found",
+        success: properties.length > 0,
         properties,
       });
     }
 
     if (id) {
-      console.log("ID block :: ", id);
       const property = await Property.findById(id);
-
-      if (!property) {
-        return NextResponse.json({
-          message: "Cannot Found Property in Database!",
-          success: false,
-        });
-      }
       return NextResponse.json({
-        message: "Fetched Successfully by id",
-        success: true,
+        message: property
+          ? "Fetched property successfully"
+          : "Property not found",
+        success: !!property,
         property,
       });
     }
 
     if (onlyFeatured) {
       const properties = await Property.find({ isFeatured: true })
-        .sort({
-          createdAt: -1,
-        })
+        .sort({ createdAt: -1 })
         .limit(5);
-      if (properties.length === 0) {
-        return NextResponse.json({
-          message: "Cannot Found Featured Properties in Database!",
-          success: false,
-        });
-      }
       return NextResponse.json({
-        message: "Fetched Successfully ",
-        success: true,
+        message: properties.length
+          ? "Fetched featured properties successfully"
+          : "No featured properties found",
+        success: properties.length > 0,
         properties,
       });
     }
 
     if (slug) {
-      const property = await Property.findOne({ slug: slug });
-      console.log("Comes To API Endpoint");
-
-      if (!property) {
-        return NextResponse.json({
-          message: "Cannot Found Property in Database!",
-          success: false,
-        });
-      }
-      console.log("Founded And Sending....");
+      const property = await Property.findOne({ slug });
       return NextResponse.json({
-        message: "Property Details Fetched Successfully",
-        success: true,
+        message: property
+          ? "Fetched property details successfully"
+          : "Property not found",
+        success: !!property,
         property,
       });
     }
 
     const properties = await Property.find({}).sort({ createdAt: -1 });
-    if (properties.length === 0) {
-      return NextResponse.json({
-        message: "Cannot Found Properties in Database!",
-        success: false,
-      });
-    }
-
     return NextResponse.json({
-      message: "Fetched Successfully all",
-      success: true,
+      message: properties.length
+        ? "Fetched all properties successfully"
+        : "No properties found",
+      success: properties.length > 0,
       properties,
     });
   } catch (error) {
-    console.log("Properties Route ERROR :: ", error);
-
-    if (error instanceof Error) {
-      return NextResponse.json({
-        message: "Network Error, try again later or refersh the page",
-        success: false,
-      });
-    }
+    console.error("Properties Route ERROR:", error);
     return NextResponse.json({
-      message: "Server Error : Something Went Wrong",
+      message: "Server error: Something went wrong",
       success: false,
     });
   }

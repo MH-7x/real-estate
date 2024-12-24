@@ -16,7 +16,7 @@ function PropertyImagesPreview({
   images: string[];
   alt: string;
 }) {
-  const ResizeImages = resizeCloudinaryImages(images, 700, 500);
+  const ResizeImages = resizeCloudinaryImages(images, 600, 500);
 
   const [api, setApi] = React.useState<CarouselApi>();
   const [current, setCurrent] = React.useState(0);
@@ -36,10 +36,10 @@ function PropertyImagesPreview({
   return (
     <>
       <Carousel
-        className="col-span-3 relative rounded-2xl overflow-hidden md:h-[494px] h-80"
+        className="md:col-span-3  col-span-5 relative rounded-2xl overflow-hidden "
         setApi={setApi}
       >
-        <CarouselContent>
+        <CarouselContent className="md:h-[494px]">
           {ResizeImages.map((image, i) => (
             <CarouselItem key={i}>
               <Image
@@ -47,13 +47,14 @@ function PropertyImagesPreview({
                 alt={alt + i}
                 width={700}
                 height={700}
+                quality={70}
                 loading="eager"
                 className="object-cover rounded-2xl h-auto w-auto object-center"
               />
             </CarouselItem>
           ))}
         </CarouselContent>
-        <div className="text-center text-sm text-white drop-shadow-xl z-20 absolute bottom-7 bg-black/50 py-2 px-4 rounded-xl left-4">
+        <div className="text-center text-sm text-white drop-shadow-xl z-20 absolute bottom-3 bg-black/80 py-2 px-4 rounded-xl left-4">
           {current} of {count}
         </div>
       </Carousel>

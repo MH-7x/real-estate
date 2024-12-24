@@ -17,10 +17,7 @@ import React from "react";
 async function RecentlyAdded() {
   try {
     const response = await fetch(
-      `${process.env.PUBLIC_URL}/api/properties?limit=5`,
-      {
-        cache: "no-store",
-      }
+      `${process.env.PUBLIC_URL}/api/properties?limit=5`
     );
     const data: ResponseProperty = await response.json();
     return data;

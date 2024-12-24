@@ -9,7 +9,7 @@ async function RatingCard({ rating }: { rating: Rating }) {
   const isAdmin = verifyToken(token?.value);
 
   return (
-    <div className="w-full rounded-lg p-4 bg-primary/5 shadow-[0_6px_24px_-12px_rgba(0,0,0,0.2)] mx-auto font-[sans-serif] relative">
+    <div className="w-full rounded-lg p-4 bg-primary/5  mx-auto font-[sans-serif] relative">
       {isAdmin && <DeleteRating id={rating._id} />}
       <div className="my-6">
         <div className="flex space-x-1">
@@ -25,7 +25,7 @@ async function RatingCard({ rating }: { rating: Rating }) {
             </svg>
           ))}
           <small
-            className={`text-[13px] font-semibold pl-2 ${rating.rating > 3 ? "text-green-600" : "text-[#575757]"}`}
+            className={`text-[13px] font-semibold pl-2 ${rating.rating > 3 ? "text-green-700" : "text-[#575757]"}`}
           >
             {rating.rating} / 5
           </small>
