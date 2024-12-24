@@ -55,6 +55,7 @@ export async function GET(req: NextRequest) {
       success: false,
     });
   }
+  await dbConnect();
   const ratings = await ratingModel
     .find({ property: id })
     .select(" -__v -updatedAt")
@@ -75,6 +76,7 @@ export async function DELETE(req: NextRequest) {
     });
   }
   try {
+    await dbConnect();
     await ratingModel.findByIdAndDelete(id);
     return NextResponse.json({
       message: "Rating has been deleted successfully",

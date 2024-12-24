@@ -1,6 +1,7 @@
 import { GetPropertyData } from "@/actions/FetchData";
 import ContactForm from "@/components/ContactForm";
 import DetailPropertyTable from "@/components/DetailPropertyTable";
+import MobilePropertyImagesPreview from "@/components/MobilePropertyImagesPreview";
 import PreviewAmenities from "@/components/PreviewAmenities";
 import PropertyImagesPreview from "@/components/PropertyImagesPreview";
 import { Button } from "@/components/ui/button";
@@ -32,11 +33,18 @@ async function MainDetails({ params }: { params: Promise<{ name: string }> }) {
   const MobileScreen = await isMobile();
   return (
     <div className="grid md:grid-cols-5 w-full  grid-cols-1 gap-10">
-      <PropertyImagesPreview
-        images={property.images}
-        alt={property.PropertyName}
-      />
-      <div className="md:mt-8 w-full col-span-5  mt-5 grid md:grid-cols-5 grid-cols-1 items-start justify-start gap-10">
+      {MobileScreen ? (
+        <MobilePropertyImagesPreview
+          images={property.images}
+          alt={property.PropertyName}
+        />
+      ) : (
+        <PropertyImagesPreview
+          images={property.images}
+          alt={property.PropertyName}
+        />
+      )}
+      <div className="md:mt-8 w-full col-span-5  mt-0 grid md:grid-cols-5 grid-cols-1 items-start justify-start gap-10">
         <div className="col-span-3 py-5">
           <h1 className="capitalize md:text-3xl text-2xl font-medium">
             {name.split("-").join(" ")}
